@@ -1,0 +1,65 @@
+.App {
+  display: block;
+}
+
+
+.LiveBackDrop {
+  position: absolute;
+  background-color: black;
+  z-index: 0;
+  filter: blur(0px);
+  transition: filter 0.5s;
+  transform: scale(1.1); 
+}
+
+.UI {
+  z-index: 2;  
+}
+
+.splashCard {
+  display: table-cell;
+  height: 60vh;
+  width: 46.4vw;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.splashCard img{
+  position: absolute;
+  width: 50vw;
+} 
+
+.UI button {
+  text-align: center;
+  position: relative;
+  color: black;
+  background: #ffddff;
+  height: 40px;
+  width: 90px;
+  margin-top: 10%;
+  display: inline-block;
+  align-items: center;
+}
+/* 
+button {
+  color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 0px;
+    font-weight: bold;
+    font-size: 9pt;
+    display: inline-block;
+    outline: black;
+} */
+
+.UI button :hover {
+    color: #ff0b0b;
+    background: #ff0b0b;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 9pt;
+  }
+ 
