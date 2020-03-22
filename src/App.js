@@ -64,7 +64,7 @@ class App extends Component {
 
     
   render() {
-    const typeText = ['welcome to my website','it\'s not ready quite yet, sorry about that','feel free to click my name and generate some new patterns','you can reach me at bradjste@gmail.com in the mean time']
+    const typeText = ['welcome to my website','it\'s not ready quite yet, sorry about that','feel free to click my name and generate some new patterns','you can reach me at bradjste@gmail.com in the meantime']
     return(
       <div  id='App'>          
 
