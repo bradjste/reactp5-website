@@ -6,8 +6,6 @@ import splashCard from './img/bsSplashCard.png'
 const background = require('./web2Back.png');
 
 class App extends Component {
-  x = 50;
-  y = 50;
 
   constructor(props) {
       super(props);
