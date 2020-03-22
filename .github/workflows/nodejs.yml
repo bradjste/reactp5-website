@@ -17,9 +17,12 @@ jobs:
         node-version: '12.x'
     - run: npm install
     - run: npm run build --if-present
-    - run: git config --global hub.protocol https
-    - run: git config --global user.name "bradjste"
-    - run: git config --global user.email "bradjste@gmail.com"
     - run: npm run deploy
+    - name: Deploy to GH Pages
+      run: |
+        git config --global user.email "bradjste@gmail.com"
+        git config --global user.name "bradjste"
+        git remote set-url origin https://91359cbe7db4a16a25f417b2875bcd456b52497e@github.com/bradjste/reactp5-website.git
+        npm run deploy
       env:
         CI: true
