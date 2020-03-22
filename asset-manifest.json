@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/reactp5-website/static/css/main.41f114ef.chunk.css",
-    "main.js": "/reactp5-website/static/js/main.3ce489f1.chunk.js",
-    "main.js.map": "/reactp5-website/static/js/main.3ce489f1.chunk.js.map",
-    "runtime-main.js": "/reactp5-website/static/js/runtime-main.d7e486eb.js",
-    "runtime-main.js.map": "/reactp5-website/static/js/runtime-main.d7e486eb.js.map",
-    "static/js/2.398ceed6.chunk.js": "/reactp5-website/static/js/2.398ceed6.chunk.js",
-    "static/js/2.398ceed6.chunk.js.map": "/reactp5-website/static/js/2.398ceed6.chunk.js.map",
-    "index.html": "/reactp5-website/index.html",
-    "precache-manifest.546414d3fbc8464ac8dd4b86c1d4711f.js": "/reactp5-website/precache-manifest.546414d3fbc8464ac8dd4b86c1d4711f.js",
-    "service-worker.js": "/reactp5-website/service-worker.js",
-    "static/css/main.41f114ef.chunk.css.map": "/reactp5-website/static/css/main.41f114ef.chunk.css.map",
-    "static/js/2.398ceed6.chunk.js.LICENSE": "/reactp5-website/static/js/2.398ceed6.chunk.js.LICENSE",
-    "static/media/bsSplashCard.png": "/reactp5-website/static/media/bsSplashCard.5267e537.png",
-    "static/media/web2Back.png": "/reactp5-website/static/media/web2Back.33dea0c2.png"
+    "main.css": "/static/css/main.41f114ef.chunk.css",
+    "main.js": "/static/js/main.aa3336d7.chunk.js",
+    "main.js.map": "/static/js/main.aa3336d7.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e6282982.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e6282982.js.map",
+    "static/js/2.398ceed6.chunk.js": "/static/js/2.398ceed6.chunk.js",
+    "static/js/2.398ceed6.chunk.js.map": "/static/js/2.398ceed6.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.08933b1d524e4cad81ad29597c46212b.js": "/precache-manifest.08933b1d524e4cad81ad29597c46212b.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.41f114ef.chunk.css.map": "/static/css/main.41f114ef.chunk.css.map",
+    "static/js/2.398ceed6.chunk.js.LICENSE": "/static/js/2.398ceed6.chunk.js.LICENSE",
+    "static/media/bsSplashCard.png": "/static/media/bsSplashCard.5267e537.png",
+    "static/media/web2Back.png": "/static/media/web2Back.33dea0c2.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.d7e486eb.js",
+    "static/js/runtime-main.e6282982.js",
     "static/js/2.398ceed6.chunk.js",
     "static/css/main.41f114ef.chunk.css",
-    "static/js/main.3ce489f1.chunk.js"
+    "static/js/main.aa3336d7.chunk.js"
   ]
 }
