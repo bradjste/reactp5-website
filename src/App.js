@@ -18,7 +18,7 @@ class App extends Component {
       };
       this.changeBlur = this.changeBlur.bind(this)
       this.changePattern = this.changePattern.bind(this)
-      setInterval(this.changeBlur,10000)
+      // setInterval(this.changeBlur,10000)
   }
 
   changeBlur(e) {
