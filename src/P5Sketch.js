@@ -47,9 +47,9 @@ class P5Sketch extends Component {
     const rowNum = p5.windowHeight / uy
     for (let j = 0; j < rowNum; j++) {    
       for (let i = 0; i < boxNum; i++) {
-        if (i==0) {
+        if (i===0) {
           currRuleSelect = 4*currRow[boxNum-1]+2*currRow[0]+currRow[1]
-        } else if (i == boxNum-1) {
+        } else if (i === boxNum-1) {
           currRuleSelect = 4*currRow[i-1]+2*currRow[i]+currRow[0]
         } else {
           currRuleSelect = 4*currRow[i-1]+2*currRow[i]+currRow[i+1]
@@ -86,7 +86,7 @@ class P5Sketch extends Component {
     this.setState(
       () => {
         let firstFil = []
-        const spaceship = [0,0,0,1,0,0,1,1,0,1,1,1,1,1]
+        // const spaceship = [0,0,0,1,0,0,1,1,0,1,1,1,1,1]
         for (let i = 0; i < this.state.boxNum; i++) {
           firstFil[i] = 0
           //  firstFil[i] = Math.floor(Math.random()*2)
