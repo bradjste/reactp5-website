@@ -29,17 +29,16 @@
   width: 50vw;
 } 
 
-.construct {
-  display: table-cell;
-  /* margin-left: 20vw; */
-  height: 60vh;
-  vertical-align: middle;
-  text-align: center;
-}
+/* .construct {
+  
+} */
 
 .construct h1{
-  position: absolute;
-  width: 60vw;
+  display: contents;
+  background-color: whitesmoke;
+  position: relative;
+  text-align: center;
+  margin-left: 50%;
 }
 
 .UI button {
