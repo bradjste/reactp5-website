@@ -15,7 +15,7 @@ class P5Sketch extends Component {
       hues: this.props.hues,
       sats: this.props.sats,
       fil: [],
-      boxNum: 100
+      boxNum: 70
     }
     this.initFil = this.initFil.bind(this)
     this.initRules = this.initRules.bind(this)
