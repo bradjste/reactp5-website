@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import P5Sketch from './P5Sketch.js';
 import splashCard from './img/bsSplashCard.png'
-import ReactTypingEffect from 'react-typing-effect';
+import ReactTypingEffect from 'react-typing-effect'
 
 class App extends Component {
 
