@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/reactp5-website/static/css/main.41f114ef.chunk.css",
+    "main.js": "/reactp5-website/static/js/main.887f7885.chunk.js",
+    "main.js.map": "/reactp5-website/static/js/main.887f7885.chunk.js.map",
+    "runtime-main.js": "/reactp5-website/static/js/runtime-main.d7e486eb.js",
+    "runtime-main.js.map": "/reactp5-website/static/js/runtime-main.d7e486eb.js.map",
+    "static/js/2.398ceed6.chunk.js": "/reactp5-website/static/js/2.398ceed6.chunk.js",
+    "static/js/2.398ceed6.chunk.js.map": "/reactp5-website/static/js/2.398ceed6.chunk.js.map",
+    "index.html": "/reactp5-website/index.html",
+    "precache-manifest.7bf767e1cbb411d957cd7fbbde537b6a.js": "/reactp5-website/precache-manifest.7bf767e1cbb411d957cd7fbbde537b6a.js",
+    "service-worker.js": "/reactp5-website/service-worker.js",
+    "static/css/main.41f114ef.chunk.css.map": "/reactp5-website/static/css/main.41f114ef.chunk.css.map",
+    "static/js/2.398ceed6.chunk.js.LICENSE": "/reactp5-website/static/js/2.398ceed6.chunk.js.LICENSE",
+    "static/media/bsSplashCard.png": "/reactp5-website/static/media/bsSplashCard.5267e537.png",
+    "static/media/web2Back.png": "/reactp5-website/static/media/web2Back.33dea0c2.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d7e486eb.js",
+    "static/js/2.398ceed6.chunk.js",
+    "static/css/main.41f114ef.chunk.css",
+    "static/js/main.887f7885.chunk.js"
+  ]
+}
