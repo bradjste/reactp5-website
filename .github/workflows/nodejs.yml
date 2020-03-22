@@ -17,6 +17,8 @@ jobs:
         node-version: '12.x'
     - run: npm install
     - run: npm run build --if-present
+    - run: git config --global user.name "bradjste"
+    - run: git config --global user.email "bradjste@gmail.com"
     - run: npm run deploy
       env:
         CI: true
