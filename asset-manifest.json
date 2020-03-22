@@ -1,24 +1,23 @@
 {
   "files": {
     "main.css": "/static/css/main.41f114ef.chunk.css",
-    "main.js": "/static/js/main.39264ca3.chunk.js",
-    "main.js.map": "/static/js/main.39264ca3.chunk.js.map",
+    "main.js": "/static/js/main.17c19aa1.chunk.js",
+    "main.js.map": "/static/js/main.17c19aa1.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.e6282982.js",
     "runtime-main.js.map": "/static/js/runtime-main.e6282982.js.map",
     "static/js/2.398ceed6.chunk.js": "/static/js/2.398ceed6.chunk.js",
     "static/js/2.398ceed6.chunk.js.map": "/static/js/2.398ceed6.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.6aba8e24c8d30fd4284d7f704f0aaeb4.js": "/precache-manifest.6aba8e24c8d30fd4284d7f704f0aaeb4.js",
+    "precache-manifest.1f5c71c130c7d13092a06b65d4f75fa9.js": "/precache-manifest.1f5c71c130c7d13092a06b65d4f75fa9.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.41f114ef.chunk.css.map": "/static/css/main.41f114ef.chunk.css.map",
     "static/js/2.398ceed6.chunk.js.LICENSE": "/static/js/2.398ceed6.chunk.js.LICENSE",
-    "static/media/bsSplashCard.png": "/static/media/bsSplashCard.5267e537.png",
-    "static/media/web2Back.png": "/static/media/web2Back.33dea0c2.png"
+    "static/media/bsSplashCard.png": "/static/media/bsSplashCard.5267e537.png"
   },
   "entrypoints": [
     "static/js/runtime-main.e6282982.js",
     "static/js/2.398ceed6.chunk.js",
     "static/css/main.41f114ef.chunk.css",
-    "static/js/main.39264ca3.chunk.js"
+    "static/js/main.17c19aa1.chunk.js"
   ]
 }
