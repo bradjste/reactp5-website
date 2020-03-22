@@ -4,7 +4,7 @@ import Sketch from 'react-p5'
 let randHue = Math.floor(Math.random()*360)
 // let stretch = Math.random()*2-1
 let phase = 0;
-let circBool = true;
+let circBool = false;
 class P5Sketch extends Component {
 
   
