@@ -1,27 +1,25 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-name: Node.js CI
-
-on: [push]
-
+name: MasterDeployCI
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [10.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: '12.x'
-    - run: npm install
-    - run: npm run build --if-present
+        node-version: ${{ matrix.node-version }}
+    - name: Install Packages
+      run: npm install
     - name: Deploy to GH Pages
       run: |
         git config --global user.email "bradjste@gmail.com"
         git config --global user.name "bradjste"
-        git remote set-url origin https://91359cbe7db4a16a25f417b2875bcd456b52497e@github.com/bradjste/reactp5-website.git
+        git remote set-url origin https://860317b454c05a1b6c2aff7931d878aa0bad6b53@github.com/bradjste/reactp5-website.git
         npm run deploy
-      env:
-        CI: true
