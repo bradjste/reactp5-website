@@ -14,7 +14,7 @@ class App extends Component {
       };
       this.changeBlur = this.changeBlur.bind(this)
       this.changePattern = this.changePattern.bind(this)
-      // setInterval(this.changeBlur,10000)
+      setInterval(this.changeBlur,10000)
   }
 
   changeBlur(e) {
@@ -78,6 +78,10 @@ class App extends Component {
           </button>   */}
           <div className="splashCard"> 
             <img src={splashCard} onClick={this.changePattern} alt="title card of site" />
+            
+          </div>
+          <div id = 'construct' className="construct">
+            <h1>New site under construction!</h1>
           </div>
         </div>  
         

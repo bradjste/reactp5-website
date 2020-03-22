@@ -29,6 +29,19 @@
   width: 50vw;
 } 
 
+.construct {
+  display: table-cell;
+  /* margin-left: 20vw; */
+  height: 60vh;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.construct h1{
+  position: absolute;
+  width: 60vw;
+}
+
 .UI button {
   text-align: center;
   position: relative;

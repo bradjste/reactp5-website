@@ -15,7 +15,7 @@ class P5Sketch extends Component {
       hues: this.props.hues,
       sats: this.props.sats,
       fil: [],
-      boxNum: 102
+      boxNum: 100
     }
     this.initFil = this.initFil.bind(this)
     this.initRules = this.initRules.bind(this)
@@ -28,7 +28,7 @@ class P5Sketch extends Component {
     p5.colorMode(p5.HSB,360,100,100)
     p5.background(360)
     this.initFil()
-    p5.frameRate(30)
+    p5.frameRate(20)
     p5.noStroke()
     this.initRules()
     this.initHues()
