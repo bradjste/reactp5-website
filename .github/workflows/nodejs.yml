@@ -23,3 +23,5 @@ jobs:
         git config --global user.name "bradjste"
         git remote set-url origin https://d99ceceb0f9b4c0fdfe0fbabfeaff1b899f189f1@github.com/bradjste/reactp5-website.git
         npm run deploy
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
