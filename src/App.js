@@ -3,8 +3,6 @@ import './App.css';
 import P5Sketch from './P5Sketch.js';
 import splashCard from './img/bsSplashCard.png'
 
-const background = require('./web2Back.png');
-
 class App extends Component {
 
   constructor(props) {
