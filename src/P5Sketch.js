@@ -31,9 +31,10 @@ class P5Sketch extends Component {
 
   draw = p5 => {
     let currRuleSelect = 0
+    let phaseAdd = 0;
     const boxNum = this.props.boxNum
     let currHue = 0;
-    if (JSON.stringify(lastRules) != JSON.stringify(this.props.rules)) {
+    if (JSON.stringify(lastRules) !== JSON.stringify(this.props.rules)) {
       this.initFil()
       lastRules = [...this.props.rules]
     }
@@ -58,7 +59,11 @@ class P5Sketch extends Component {
           p5.fill((currHue+randHue)%360,100,0)
         }
        
-        const circRatio = 0.1;
+        let circRatio = 0.1;
+        
+        if (mouseIsPressed) {
+          phaseAdd = 0.09;
+        }
 
         if ((p5.dist(p5.mouseX/1.1,p5.mouseY/1.1,ux*i,uy*j) < p5.windowWidth*circRatio ?  circBool : false)) {
           p5.rect(ux*(i-0.5),uy*(j+0.8),ux+5,uy+5)
@@ -68,7 +73,7 @@ class P5Sketch extends Component {
       currRow = [...nextRow]
     }
     this.calcNil()   
-    phase+= p5.TWO_PI*0.00511111;
+    phase+= p5.TWO_PI*0.00511111 + phaseAdd;
     if (phase > p5.TWO_PI) {
       phase = 0;
     }
