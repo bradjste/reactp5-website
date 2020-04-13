@@ -77,6 +77,10 @@ class App extends Component {
     )
   }
 
+  oldSiteRedirect = () => {
+    window.open('https://bradjste.github.io/bjsWebsite/','_blank')
+  }
+
   render() {
     const typeText = ['welcome to my website',
                       'it\'s not ready quite yet, sorry about that',
@@ -97,6 +101,8 @@ class App extends Component {
         </div>  
         
         <Route exact path="/">
+          <button className='oldSite' onClick={this.oldSiteRedirect}>OLD SITE >></button>
+
           <div id = 'UI' className="UI">
 
             {/* 
@@ -115,7 +121,6 @@ class App extends Component {
             <div id = 'construct' className="construct" >
             <ReactTypingEffect className="constructR" text={typeText} speed={50} eraseDelay={800}/>
               {/* <h1>New site under construction!</h1> */}
-              
             </div>
           </div>
         </Route> 
