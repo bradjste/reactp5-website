@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import './App.css';
+import About from './pageComps/About'
+import Art from './pageComps/About'
+import Music from './pageComps/About'
+import Contact from './pageComps/About'
 import P5Sketch from './P5Sketch.js';
 import splashCard from './img/bsSplashCard.png'
 import ReactTypingEffect from 'react-typing-effect'
@@ -12,11 +17,14 @@ class App extends Component {
         rules: [1,0,1,1,0,1,1,0],
         hues: [0,30,60,90,120,150,180,210],
         sats: [100,100,100,100,20,30,40,50],
-        isBlur: true
+        fil: [],
+        isBlur: true,
+        boxNum: 250
       };
       this.changeBlur = this.changeBlur.bind(this)
       this.changePattern = this.changePattern.bind(this)
       // setInterval(this.changeBlur,10000)
+      this.changePattern()
   }
 
   changeBlur(e) {
@@ -24,7 +32,7 @@ class App extends Component {
       document.getElementById('LiveBackDrop').style.filter = 'blur(0px)';
     }
     else {
-      document.getElementById('LiveBackDrop').style.filter = 'blur(6px)';
+      document.getElementById('LiveBackDrop').style.filter = 'blur(4px)';
     }
     this.setState(
       prevState => ({
@@ -36,6 +44,14 @@ class App extends Component {
 
   onHover(e) {
 
+  }
+
+  randomizeFil() {
+    let filArr = [];
+    for (let i = 0; i< this.state.boxNum; i++) {
+      filArr[i] = Math.floor(Math.random()*2);
+    }
+    return filArr;
   }
 
   changePattern(e) {
@@ -51,6 +67,7 @@ class App extends Component {
         }
         return(
           {
+            fil: this.randomizeFil(),
             rules: ruleArr,
             hues: hueArr,
             sats: satArr
@@ -60,37 +77,64 @@ class App extends Component {
     )
   }
 
-  
-
-    
   render() {
-    const typeText = ['welcome to my website','it\'s not ready quite yet, sorry about that','feel free to click my name and generate some new patterns','you can reach me at bradjste@gmail.com in the meantime']
+    const typeText = ['welcome to my website',
+                      'it\'s not ready quite yet, sorry about that',
+                      'feel free to around and generate some new patterns',
+                      'you can reach me at bradjste@gmail.com in the meantime']
     return(
+      <Router>
+        
       <div  id='App'>          
 
-        <div id='LiveBackDrop' className="LiveBackDrop" onMouseMove={this.handleMouseMove}>
-          <P5Sketch canvasParentRef='LiveBackDrop' sats={this.state.sats} rules={this.state.rules} hues={this.state.hues}/>   
-        </div> 
-
-        <div id = 'UI' className="UI">
-          {/* <button onClick={this.changeBlur} onHover={this.onHover}>
-            Blur
-          </button>  
-          <button onClick={this.changePattern}>
-            Pattern
-          </button>   */}
-          <div className="splashCard"> 
-            <img src={splashCard} onClick={this.changePattern} alt="title card of site" />
-            
-          </div>
-          <div id = 'construct' className="construct" onClick={this.changeBlur}>
-          <ReactTypingEffect className="constructR" text={typeText} speed={50} eraseDelay={800}/>
-            {/* <h1>New site under construction!</h1> */}
-          </div>
+        <div id='LiveBackDrop' className="LiveBackDrop" onMouseMove={this.handleMouseMove}  onClick={this.changePattern}>
+          <P5Sketch canvasParentRef='LiveBackDrop' 
+              sats={this.state.sats} 
+              rules={this.state.rules} 
+              hues={this.state.hues} 
+              boxNum={this.state.boxNum}
+              fil={this.state.fil}/>   
         </div>  
+        
+        <Route exact path="/">
+          <div id = 'UI' className="UI">
+
+            {/* 
+            <div className="linkDiv">
+            <Link to="/about" ><button>About</button></Link>
+            <Link to="/art" ><button>Art</button></Link>
+            <Link to="/music" ><button>Music</button></Link>
+            <Link to="/contact"><button>Contact</button></Link>
+            </div> 
+            */}
+
+            <div className="splashCard"> 
+              <img src={splashCard} onClick={this.changeBlur} alt="title card of site" />
+            </div>
+
+            <div id = 'construct' className="construct" >
+            <ReactTypingEffect className="constructR" text={typeText} speed={50} eraseDelay={800}/>
+              {/* <h1>New site under construction!</h1> */}
+              
+            </div>
+          </div>
+        </Route> 
+        <Route path="/about">
+          <About />
+        </Route> 
+        <Route path="/art">
+          <Art />
+        </Route> 
+        <Route path="/music">
+          <Music />
+        </Route> 
+        <Route path="/contact">
+          <Contact />
+        </Route> 
         
 
       </div>
+      </Router>
     );
   }
 }

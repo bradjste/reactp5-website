@@ -1,5 +1,20 @@
 .App {
   display: block;
+  overflow: hidden;
+  user-select: none;
+}
+
+.condiv {
+  z-index: 3;
+  position:  absolute;
+  margin: 100px;
+  background-color: whitesmoke;
+  /* flex:var(--condiv-flex); */
+}
+
+.subtopic
+{
+margin:10px 10px 30px 10px !important;
 }
 
 
@@ -7,9 +22,10 @@
   position: absolute;
   background-color: black;
   z-index: 0;
-  filter: blur(6px);
+  filter: blur(4px);
   transition: filter 0.5s;
   transform: scale(1.1); 
+  cursor: cell;
 }
 
 .UI {
@@ -22,6 +38,7 @@
   width: 46.4vw;
   vertical-align: middle;
   text-align: center;
+  cursor: pointer;
 }
 
 .splashCard img{
@@ -33,6 +50,11 @@
   display: block;
   position: block;
   text-align: center;
+}
+
+.linkDiv {
+  display: inline-block;
+  position: relative;
 }
 
 .constructR {
@@ -52,10 +74,10 @@
   position: relative;
   color: black;
   
-  background: #ffddff;
+  background: whitesmoke;
   height: 40px;
   width: 90px;
-  margin-top: 10%;
+  /* margin-top: 10%; */
   display: inline-block;
   align-items: center;
 }
