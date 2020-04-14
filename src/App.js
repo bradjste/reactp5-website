@@ -19,7 +19,7 @@ class App extends Component {
         sats: [100,100,100,100,20,30,40,50],
         fil: [],
         isBlur: true,
-        boxNum: 250
+        boxNum: 150
       };
       this.changeBlur = this.changeBlur.bind(this)
       this.changePattern = this.changePattern.bind(this)
@@ -101,7 +101,7 @@ class App extends Component {
         </div>  
         
         <Route exact path="/">
-          <button className='oldSite' onClick={this.oldSiteRedirect}>OLD SITE >></button>
+          <button className='oldSite' onClick={this.oldSiteRedirect}>old site >></button>
 
           <div id = 'UI' className="UI">
 
