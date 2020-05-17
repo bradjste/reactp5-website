@@ -4,11 +4,9 @@ import Sketch from 'react-p5'
 let randHue = Math.floor(Math.random()*360)
 let phase = 0;
 let mouseIsPressed = false;
-let circBool = true;
 let lastRules = []
 class P5Sketch extends Component {
 
-  
   constructor(props) {
     super(props)
     this.state = {
@@ -16,6 +14,16 @@ class P5Sketch extends Component {
     }
     this.initFil = this.initFil.bind(this)
     this.calcNil = this.calcNil.bind(this)
+  }
+
+  componentDidMount() {
+    document.getElementById('p5Id').classList.add('enter-off')
+    this.fadeInById('p5Id')
+  }
+
+  fadeInById(id) {
+    document.getElementById(id).classList.remove('enter-off')
+    document.getElementById(id).classList.add('fade-in')
   }
 
   setup = (p5,canvasParentRef) => {
@@ -32,6 +40,7 @@ class P5Sketch extends Component {
   draw = p5 => {
     let currRuleSelect = 0
     let phaseAdd = 0;
+    let circRatio = 0.1;
     const boxNum = this.props.boxNum
     let currHue = 0;
     if (JSON.stringify(lastRules) !== JSON.stringify(this.props.rules)) {
@@ -40,8 +49,13 @@ class P5Sketch extends Component {
     }
     let currRow = [...this.state.fil];
     let nextRow = []
-    const ux = Math.floor(p5.windowWidth / boxNum)+1
-    const uy = ux
+    let ux = Math.floor(p5.windowWidth / boxNum)+1
+    let uy = ux
+    if (p5.windowHeight >= p5.windowWidth) {
+      uy = Math.floor(p5.windowHeight / boxNum)+1
+      ux = uy*(.7);
+      circRatio = 0.3
+    }
     const rowNum = Math.floor(p5.windowHeight / uy)
     for (let j = 0; j < rowNum; j++) {    
       for (let i = 0; i < boxNum; i++) {
@@ -59,13 +73,17 @@ class P5Sketch extends Component {
           p5.fill((currHue+randHue)%360,100,0)
         }
        
-        let circRatio = 0.1;
+        
         
         if (mouseIsPressed) {
           phaseAdd = 0.09;
         }
 
-        if ((p5.dist(p5.mouseX/1.1,p5.mouseY/1.1,ux*i,uy*j) < p5.windowWidth*circRatio ?  circBool : false)) {
+        if (this.props.circBool) {
+          if (p5.dist(p5.mouseX/1.1,p5.mouseY/1.1,ux*i,uy*j) < p5.windowWidth*circRatio) {
+            p5.rect(ux*(i-0.5),uy*(j+0.8),ux+5,uy+5)
+          }  
+        } else {
           p5.rect(ux*(i-0.5),uy*(j+0.8),ux+5,uy+5)
         }
         nextRow[i] = this.props.rules[currRuleSelect]
@@ -132,7 +150,9 @@ class P5Sketch extends Component {
 
   render() {
     return (
-      <Sketch setup={this.setup} draw={this.draw} windowResized={this.onWindowResize} mousePressed={this.mousePressed} mouseReleased={this.mouseReleased}/>
+      <div id='p5Id'>
+          <Sketch setup={this.setup} draw={this.draw} windowResized={this.onWindowResize} mousePressed={this.mousePressed} mouseReleased={this.mouseReleased}/>
+      </div>
     )
   }
 

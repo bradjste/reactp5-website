@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import MusicPlayer from 'react-responsive-music-player'
+import playlist from '../playlist';
+
 class Music extends Component {
-render() {
-return (
-<div className="condiv">
-<h1 className="subtopic">About Me</h1>
-<h4>Hey there,</h4>
-<h1>I'm Brad Stevenson</h1>
-<h3>Full Stack Web <u>Developer</u> | UI/UX <u>Designer</u></h3>
-<br></br>
-<p>Halp
-</p>
-<Link to="/"><button type="button">
-    <span>Back to splash</span>
-  </button></Link>
-</div>
-)
+
+    componentWillMount() {
+        this.props.isSplashNo()
+        this.props.changeActivePage("music")
+    }
+
+    componentDidMount() {
+        if (!this.props.hasEntered) {
+          document.getElementById('musicPage').classList.add('enter-off')
+          setTimeout(this.fadeInDelay,200)
+          setTimeout(this.props.enterChange,300);
+        }   
+        
+      }
+    
+      fadeInDelay() {
+        document.getElementById('musicPage').classList.remove('enter-off')
+        document.getElementById('musicPage').classList.add('fade-in')
+      }
+
+    render() {
+        return (
+            <div id="musicPage">
+                <div className="backingMusic" />
+                <div  className="music">
+                    <h1 className="subtopic">Hexer Quiz</h1>
+                    <MusicPlayer className="player" playlist={playlist} btnColor="#F89272"/>
+                    <h2 className="subtopic4">Bandcamp: <a href="https://hexerquiz.bandcamp.com/" rel='noreferrer noopener' target="_blank" className='conLink'>hexerquiz.bandcamp.com</a></h2>
+                    <h2 className="subtopic4">SoundCloud: <a href="https://soundcloud.com/bradjste" rel='noreferrer noopener' target="_blank" className='conLink'>soundcloud.com/bradjste</a></h2>
+                </div>
+            </div>
+
+        )
+    }
 }
-}
+
 export default Music

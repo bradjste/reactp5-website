@@ -1,38 +1,47 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css';
+import Splash from './pageComps/Splash'
 import About from './pageComps/About'
-import Art from './pageComps/About'
-import Music from './pageComps/About'
-import Contact from './pageComps/About'
+import Art from './pageComps/Art'
+import Music from './pageComps/Music'
+import Contact from './pageComps/Contact'
 import P5Sketch from './P5Sketch.js';
-import splashCard from './img/bsSplashCard.png'
-import ReactTypingEffect from 'react-typing-effect'
+import splashCard from './img/bsSplashCard2.png'
+import Navbar from "./Navbar"
 
 class App extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
-        rules: [1,0,1,1,0,1,1,0],
+        rules: [0,0,0,0,0,0,0,0],
         hues: [0,30,60,90,120,150,180,210],
-        sats: [100,100,100,100,20,30,40,50],
+        sats: [100,100,40,30,20,100,40,50],
         fil: [],
         isBlur: true,
-        boxNum: 150
+        isSplash: true,
+        boxNum: 70,
+        hasEntered: false,
+        circBool: false,
+        activePage: ""
       };
       this.changeBlur = this.changeBlur.bind(this)
       this.changePattern = this.changePattern.bind(this)
-      // setInterval(this.changeBlur,10000)
+      this.changeActivePage= this.changeActivePage.bind(this)     
+      this.isSplashYes = this.isSplashYes.bind(this)
+      this.isSplashNo = this.isSplashNo.bind(this)
       this.changePattern()
   }
 
   changeBlur(e) {
     if (this.state.isBlur){
       document.getElementById('LiveBackDrop').style.filter = 'blur(0px)';
+      document.getElementById('splashCard').style.opacity = '0.5';
     }
     else {
-      document.getElementById('LiveBackDrop').style.filter = 'blur(4px)';
+      document.getElementById('LiveBackDrop').style.filter = 'blur(7px)';
+      document.getElementById('splashCard').style.opacity = '1';
     }
     this.setState(
       prevState => ({
@@ -42,8 +51,38 @@ class App extends Component {
     
   }
 
-  onHover(e) {
 
+  changeActivePage = (x) => {
+    this.setState(() => {
+      return {
+        activePage: x
+      }
+    })
+  }
+
+
+  enterChange(e) {
+    this.setState(() => {
+      return {
+        hasEntered: true
+      }
+    })
+  }
+
+  isSplashYes(e) {
+    this.setState(() => {
+      return {
+        isSplash: true
+      }
+    })
+  }
+
+  isSplashNo(e) {
+    this.setState(() => {
+      return {
+        isSplash: false
+      }
+    })
   }
 
   randomizeFil() {
@@ -63,7 +102,7 @@ class App extends Component {
         for (let i = 0; i < 8; i++) {
           ruleArr[i] = Math.floor(Math.random()*2)
           hueArr[i] = Math.floor(Math.random()*360)
-          satArr[i] = Math.floor(Math.random()*100)
+          satArr[i] = Math.floor(Math.random()*60)
         }
         return(
           {
@@ -82,64 +121,74 @@ class App extends Component {
   }
 
   render() {
-    const typeText = ['welcome to my website',
-                      'it\'s not ready quite yet, sorry about that',
-                      'feel free to click around and generate some new patterns',
-                      'you can reach me at bradjste@gmail.com in the meantime']
-    return(
-      <Router>
+      let splash = <img id='splashCard'src={splashCard} onClick={this.changeBlur} alt="title card of site" />
+      return(
+      <div  id='App'>  
+        <Router>       
+          {!this.state.isSplash && this.state.activePage.length > 0 &&
+          <Navbar className="navbar"
+                enterChange={this.enterChange.bind(this)}
+                hasEntered={this.state.hasEntered}
+                isSplashYes={this.isSplashYes}
+                isSplashNo={this.isSplashNo}
+                activePage={this.state.activePage}
+                />}
+                
+
         
-      <div  id='App'>          
+          <div id='LiveBackDrop' className="LiveBackDrop" onMouseMove={this.handleMouseMove}  onClick={this.changePattern}>
+            <P5Sketch canvasParentRef='LiveBackDrop' 
+                sats={this.state.sats} 
+                rules={this.state.rules} 
+                hues={this.state.hues} 
+                boxNum={this.state.boxNum}
+                fil={this.state.fil}
+                circBool={this.state.circBool}
+                />   
+          </div>   
 
-        <div id='LiveBackDrop' className="LiveBackDrop" onMouseMove={this.handleMouseMove}  onClick={this.changePattern}>
-          <P5Sketch canvasParentRef='LiveBackDrop' 
-              sats={this.state.sats} 
-              rules={this.state.rules} 
-              hues={this.state.hues} 
-              boxNum={this.state.boxNum}
-              fil={this.state.fil}/>   
-        </div>  
-        
-        <Route exact path="/">
-          <button className='oldSite' onClick={this.oldSiteRedirect}>old site >></button>
-
-          <div id = 'UI' className="UI">
-
-            {/* 
-            <div className="linkDiv">
-            <Link to="/about" ><button>About</button></Link>
-            <Link to="/art" ><button>Art</button></Link>
-            <Link to="/music" ><button>Music</button></Link>
-            <Link to="/contact"><button>Contact</button></Link>
-            </div> 
-            */}
-
-            <div className="splashCard"> 
-              <img src={splashCard} onClick={this.changeBlur} alt="title card of site" />
-            </div>
-
-            <div id = 'construct' className="construct" >
-            <ReactTypingEffect className="constructR" text={typeText} speed={50} eraseDelay={800}/>
-              {/* <h1>New site under construction!</h1> */}
-            </div>
-          </div>
-        </Route> 
-        <Route path="/about">
-          <About />
-        </Route> 
-        <Route path="/art">
-          <Art />
-        </Route> 
-        <Route path="/music">
-          <Music />
-        </Route> 
-        <Route path="/contact">
-          <Contact />
-        </Route> 
-        
-
+          <Route exact path="/">
+            <Splash splash={splash} 
+                    hasEntered={this.state.hasEntered} 
+                    isSplashNo={this.isSplashNo} 
+                    isSplashYes={this.isSplashYes} 
+                    changeBlur={this.changeBlur}
+                    />
+          </Route> 
+          <Route path="/about">
+            <About enterChange={this.enterChange.bind(this)} 
+                    isSplashNo={this.isSplashNo} 
+                    hasEntered={this.state.hasEntered} 
+                    isSplashYes={this.isSplashYes}
+                    changeActivePage={this.changeActivePage.bind(this)}
+                    />
+          </Route> 
+          <Route path="/art">
+            <Art enterChange={this.enterChange.bind(this)} 
+                    hasEntered={this.state.hasEntered} 
+                    isSplashNo={this.isSplashNo} 
+                    isSplashYes={this.isSplashYes}
+                    changeActivePage={this.changeActivePage.bind(this)}
+                    />
+          </Route> 
+          <Route path="/music">
+            <Music enterChange={this.enterChange.bind(this)} 
+                    hasEntered={this.state.hasEntered} 
+                    isSplashNo={this.isSplashNo} 
+                    isSplashYes={this.isSplashYes}
+                    changeActivePage={this.changeActivePage.bind(this)}
+                    />
+          </Route> 
+          <Route path="/contact">
+            <Contact enterChange={this.enterChange.bind(this)} 
+                      hasEntered={this.state.hasEntered} 
+                      isSplashNo={this.isSplashNo} 
+                      isSplashYes={this.isSplashYes}
+                      changeActivePage={this.changeActivePage.bind(this)}
+                      />
+          </Route> 
+        </Router>
       </div>
-      </Router>
     );
   }
 }
