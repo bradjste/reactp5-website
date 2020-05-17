@@ -124,7 +124,7 @@ class App extends Component {
       let splash = <img id='splashCard'src={splashCard} onClick={this.changeBlur} alt="title card of site" />
       return(
       <div  id='App'>  
-        <Router>       
+        <Router basename={process.env.PUBLIC_URL}>       
           {!this.state.isSplash && this.state.activePage.length > 0 &&
           <Navbar className="navbar"
                 enterChange={this.enterChange.bind(this)}
