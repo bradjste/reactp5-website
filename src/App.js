@@ -17,7 +17,7 @@ class App extends Component {
       this.state = {
         rules: [0,0,0,0,0,0,0,0],
         hues: [0,30,60,90,120,150,180,210],
-        sats: [100,100,40,30,20,100,40,50],
+        sats: [60,60,40,30,20,60,40,50],
         fil: [],
         isBlur: true,
         isSplash: true,
