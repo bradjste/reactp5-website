@@ -11,6 +11,7 @@ class Splash extends Component {
         setTimeout(this.fadeInEnter,1100)
         setTimeout(this.props.enterChange,300);
       }
+      this.props.isSplashYes();
     }
 
     fadeInById(id) {
@@ -26,9 +27,12 @@ class Splash extends Component {
         let pageLink = "/" + (this.props.activePage === "" ? this.props.activePage : "about")
         return (
           <div id = 'UI' className="UI">
-            <Link id='enterLink' to={pageLink} >
-              <button className='enter' onClick={this.props.isSplashNo}>ENTER</button>
-            </Link>
+            <div className='enterPar'>
+              <Link id='enterLink' to={pageLink} >
+                <button className='enter' onClick={this.props.isSplashNo}>ENTER</button>
+              </Link>
+            </div>
+              
             
             <div id='splashCardDiv' className="splashCard"> 
               {this.props.splash}

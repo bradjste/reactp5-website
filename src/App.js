@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css';
-import Splash from './pageComps/Splash'
-import About from './pageComps/About'
-import Art from './pageComps/Art'
-import Music from './pageComps/Music'
-import Contact from './pageComps/Contact'
-import P5Sketch from './P5Sketch.js';
+import Splash from './components/pageComps/Splash'
+import About from './components/pageComps/About'
+import Contact from './components/pageComps/Contact'
+import Portfolio from './components/pageComps/Portfolio'
+import P5Sketch from './components/P5Sketch.js';
 import splashCard from './img/bsSplashCard2.png'
-import Navbar from "./Navbar"
+import Navbar from "./components/Navbar"
 
 class App extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
-        rules: [0,0,0,0,0,0,0,0],
-        hues: [0,30,60,90,120,150,180,210],
-        sats: [40,30,40,30,20,20,40,20],
-        fil: [],
-        isBlur: true,
+        isBlur: false,
         isSplash: true,
-        boxNum: 70,
         hasEntered: false,
-        circBool: false,
         activePage: ""
       };
       this.changeBlur = this.changeBlur.bind(this)
@@ -121,7 +114,7 @@ class App extends Component {
   }
 
   render() {
-      let splash = <img id='splashCard'src={splashCard} onClick={this.changeBlur} alt="title card of site" />
+      let splash = <img id='splashCard'src={splashCard} alt="title card of site" />
       return(
       <div  id='App'>  
         <Router basename={`${process.env.PUBLIC_URL}/`}>       
@@ -137,14 +130,8 @@ class App extends Component {
 
         
           <div id='LiveBackDrop' className="LiveBackDrop" onMouseMove={this.handleMouseMove}  onClick={this.changePattern}>
-            <P5Sketch canvasParentRef='LiveBackDrop' 
-                sats={this.state.sats} 
-                rules={this.state.rules} 
-                hues={this.state.hues} 
-                boxNum={this.state.boxNum}
-                fil={this.state.fil}
-                circBool={this.state.circBool}
-                />   
+            {/* <img src={backImg} alt="backing img" /> */}
+            <P5Sketch canvasParentRef='LiveBackDrop'/>   
           </div>   
 
           <Route exact path="/">
@@ -163,18 +150,10 @@ class App extends Component {
                     changeActivePage={this.changeActivePage.bind(this)}
                     />
           </Route> 
-          <Route path="/art">
-            <Art enterChange={this.enterChange.bind(this)} 
-                    hasEntered={this.state.hasEntered} 
+          <Route path="/portfolio">
+            <Portfolio enterChange={this.enterChange.bind(this)} 
                     isSplashNo={this.isSplashNo} 
-                    isSplashYes={this.isSplashYes}
-                    changeActivePage={this.changeActivePage.bind(this)}
-                    />
-          </Route> 
-          <Route path="/music">
-            <Music enterChange={this.enterChange.bind(this)} 
                     hasEntered={this.state.hasEntered} 
-                    isSplashNo={this.isSplashNo} 
                     isSplashYes={this.isSplashYes}
                     changeActivePage={this.changeActivePage.bind(this)}
                     />

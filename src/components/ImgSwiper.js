@@ -1,10 +1,10 @@
 import React from 'react';
 import Swiper from 'react-id-swiper';
-import img1 from './img/art0.jpg'
-import img2 from './img/art1.jpg'
-import img3 from './img/art2.jpg'
-import img4 from './img/art3.jpg'
-import img5 from './img/art4.jpg'
+import img1 from '../img/art0.jpg'
+import img2 from '../img/art1.jpg'
+import img3 from '../img/art2.jpg'
+import img4 from '../img/art3.jpg'
+import img5 from '../img/art4.jpg'
 
 const ImgSwiper = () => {
     const params = {
@@ -20,17 +20,12 @@ const ImgSwiper = () => {
       },
         spaceBetween: 30,
         slidesPerView: 3,
-        pagination: {
-          el: '.swiper-pagination',
-          type: 'progressbar',
-        },
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
         }
       }
     
-
     return (
       <Swiper {...params}>
         <div className="slideImg">
@@ -52,5 +47,6 @@ const ImgSwiper = () => {
       </Swiper>
     )
   };
+
 
   export default ImgSwiper;

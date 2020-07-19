@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import gif0 from "../img/gif0.gif"
-import gif1 from "../img/gif1.gif"
+import gif0 from "../../img/gif0.gif"
+import gif1 from "../../img/gif1.gif"
 let gifList = [gif0,gif1]
 
 class About extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {gifNum: 0}
-        setInterval(this.changeGif.bind(this),5000)
-    }
-
-    componentWillMount() {
         this.props.isSplashNo()
         this.props.changeActivePage("about")
+        this.state = {gifNum: 0}
+        setInterval(this.changeGif.bind(this),5000)
     }
 
     changeGif() {
@@ -40,7 +37,6 @@ class About extends Component {
     render() {
         return (
             <div id='aboutPage'>
-                <div className="backingAbout" />
                 <div className="about">
                     <div className="aboutText">
                         <h1 className="subtopic">Hello, world!</h1>
@@ -50,6 +46,12 @@ class About extends Component {
                             I received my Bachelor of Arts from UC San Diego in <a rel='noreferrer noopener' className="conLink" href="https://music-cms.ucsd.edu/ugrad/icam-major.html" target="_blank">Interdisciplinary Computing & the Arts Major - Music Technology (ICAM) </a>
                               in 2017.
                             Here I learned to synthesize principles of music, computer science, fine art, electrical engineering, and interface design to create new tools of expression and experience for humans in the digital age.
+                            <br />
+                            <br />
+                            I am currently employed as a full-stack software engineer, honing my craft as an effective and resourseful programmatic problem-solver. 
+                            <br />
+                            <br />
+                            I code in languages such as Java, JavaScript, SQL, and Python to achieve sustainable and scalable solutions to complex technical problems. 
                         </h2>                
                         {/* <h2 className="subtopic3"><strong>I am a creative technologist; </strong> 
                         an interaction designer that integrates cutting-edge technology with modern design principles to create contemporary digital media and applications.</h2>
@@ -62,9 +64,6 @@ class About extends Component {
                 <div className='aboutGif'>
                     <img src={gifList[this.state.gifNum]} alt="loop of generated art"></img>
                 </div>
-                <div className='aboutGif2'>
-                    <img src={gifList[this.state.gifNum]} alt="loop of generated art"></img>
-                </div>   
             </div>
             
         )

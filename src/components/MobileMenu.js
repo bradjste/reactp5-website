@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import activeIcon from "./img/menuActive.png"
-import inactiveIcon from "./img/menuInactive.png"
+import activeIcon from "../img/menuActive.png"
+import inactiveIcon from "../img/menuInactive.png"
 import DDItem from "./DDItem"
 
 
@@ -47,16 +47,13 @@ class MobileMenu extends Component {
                          alt="menu icon"
                          onClick={this.openMenu}
                          />
-                         
+                    {!this.state.menuOpen &&<p className='displayPageMob'>{this.props.activePage}</p>}
                 </div>
-                <div className='displayPageMob'>
-                    {!this.state.menuOpen &&<p className='mobPageDis'>{this.props.activePage}</p>}
-                </div>
+                
                 {this.state.menuOpen && 
-                    <div id="dropdown" className="dropdown">
+                    <div id="dropdownMobile" className="dropdownMobile">
                         <DDItem openMenu={this.openMenu} item="about"/>
-                        <DDItem openMenu={this.openMenu} item="art"/>
-                        <DDItem openMenu={this.openMenu} item="music"/>
+                        <DDItem openMenu={this.openMenu} item="portfolio"/>
                         <DDItem openMenu={this.openMenu} item="contact"/>
                     </div>
                 }

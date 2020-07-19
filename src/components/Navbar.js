@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import NavItem from './NavItem';
 import {Link} from 'react-router-dom';
 import MobileMenu from './MobileMenu'
-import splashCard from './img/bjsLogo2.png'
+import splashCard from '../img/bjsLogo2.png'
 
 class Navbar extends Component {
 
     componentDidMount() {
-        console.log(this.props.hasEntered);
 
         if (!this.props.hasEntered){
             this.fadeInById('navId')
@@ -26,6 +25,7 @@ class Navbar extends Component {
 
     getSnapshotBeforeUpdate(prevProps) {
         document.getElementById(prevProps.activePage).classList.remove('active');
+        return null;
     }
 
     render() {
@@ -42,8 +42,9 @@ class Navbar extends Component {
 
                     <ul>
                         <NavItem item="about" tolink="/about"></NavItem>
-                        <NavItem item="art" tolink="/art"></NavItem>
-                        <NavItem item="music" tolink="/music"></NavItem>
+                        <NavItem item="portfolio" tolink="/portfolio"></NavItem>
+                        {/* <NavItem item="art" tolink="/art"></NavItem> */}
+                        {/* <NavItem item="music" tolink="/music"></NavItem> */}
                         <NavItem item="contact" tolink="/contact" ></NavItem>
                     </ul>
 
