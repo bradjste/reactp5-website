@@ -604,9 +604,6 @@ nav ul li a :visited
 
 }
 
-.mob-port-subject p{
-
-}
 
 #mobile-port-dropdown:hover{
   color: white;
@@ -673,10 +670,10 @@ nav ul li a :visited
               0 16px 16px rgba(0,0,0,0.12);
 }
 
-.cell-autom:hover{
-  /* filter: blur(0px); */
+/* .cell-autom:hover{
+  filter: blur(0px);
 
-}
+} */
 
 .swiper img{
   height: auto;
