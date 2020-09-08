@@ -168,7 +168,7 @@ strong {
 .subtopic4
 {
   font-family: 'Montserrat';
-  font-size: 18pt;
+  font-size: 16pt;
   margin-left:50px;
   margin-top: 0;
   font-weight: 100;
@@ -226,7 +226,7 @@ strong {
 .contactSketch {
   z-index:1;
   position: absolute;
-
+  
 }
 
 .UI {
@@ -307,6 +307,55 @@ strong {
   background: #F89272;
 }
 
+#projItemsDiv {
+  display: flex;
+  width: 100%;
+  overflow: auto;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+
+.portProjItem {
+  background: none;
+  
+  display: flex;
+  margin: 0px;
+  width: 20vw;
+  height: 20vw;
+  overflow: hidden;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.portProjItem img {
+  height:100%;
+}
+
+.portProjItem :hover{
+  filter: blur(1px);
+  cursor: pointer;
+}
+
+.projTitle {
+  z-index:10;
+  font-size: 14pt;
+  font-family: Montserrat;
+  text-align: center;
+  /* position: absolute; */
+  background: black;
+  color: white;
+  min-width: 150px;
+  width: 70%;
+  /* margin-top: 120px; */
+  padding:10px;
+}
+
+.portProjItem p:hover {
+  filter: none;
+  cursor: unset;
+}
+
 .active a
 {
   font-weight: 800;
@@ -327,6 +376,14 @@ strong {
 
 .conLink:visited {
   color: rgb(0, 141, 206);
+}
+
+.openPalm {
+  cursor: grab;
+}
+
+.closedPalm {
+  cursor: grabbing;
 }
 
 
@@ -839,7 +896,7 @@ nav ul li a :visited
       }
 
       .enter {
-        margin:0 -5%;
+        margin:0 -7%;
         margin-top: 60vh;
         display:block;
         width: 40vw;
@@ -876,6 +933,18 @@ nav ul li a :visited
 
       .subtopic {
         margin-left: 15px;
+      }
+
+      #projItemsDiv {
+        flex-direction: column;
+      }
+
+      .portProjItem {
+        
+        margin-bottom: 8vw;
+        margin-left: 30px;
+        width: 60vw;
+        height: 60vw;
       }
 
   }

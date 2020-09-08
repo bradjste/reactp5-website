@@ -49,11 +49,11 @@ class P5Sketch extends Component {
     //   p5.background(0)
     // }
     let sqSize = p5.windowWidth*0.3333
-    p5.fill(360*(phase/p5.TWO_PI),10,100)
+    p5.fill(360*(phase/p5.TWO_PI),20,100)
     p5.rect(0,0,sqSize,p5.windowHeight)
-    p5.fill((360*(phase/p5.TWO_PI)+30)%360,10,100)
+    p5.fill((360*(phase/p5.TWO_PI)+30)%360,20,100)
     p5.rect(p5.windowWidth*0.3333,0,sqSize,p5.windowHeight)
-    p5.fill((360*(phase/p5.TWO_PI)+90)%360,10,100)
+    p5.fill((360*(phase/p5.TWO_PI)+90)%360,20,100)
     p5.rect(p5.windowWidth*0.3333*2,0,sqSize,p5.windowHeight)
     phase += 0.01;
     if (phase > p5.TWO_PI) {

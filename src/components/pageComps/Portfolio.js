@@ -6,17 +6,35 @@ import CellAuto from '../p5Portfolio/CellAuto';
 import NoisePaint from '../p5Portfolio/NoisePaint';
 import Harmony from '../p5Portfolio/Harmony';
 import caret from '../../img/caret.png'
+import vansGif from '../../img/vans.gif'
+import p50 from '../../img/p5Sticker1.svg'
+import p51 from '../../img/p5Sticker2.png'
+import p52 from '../../img/p5Sticker3.png'
+import p53 from '../../img/p5Sticker4.png'
+import p54 from '../../img/p5Sticker5.png'
+import splunkGif from '../../img/splunk.gif'
+import ProjectItem from '../ProjectItem'
 import {Button,ButtonGroup,DropdownButton,Dropdown}  from 'react-bootstrap';
+
+let p5Pix = [];
 
 class Portfolio extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currSubject: "Interactive_port"
+            currSubject: "Interactive_port",
+            photo: 0
         }
         this.changePortf = this.changePortf.bind(this);
         this.props.isSplashNo()
         this.props.changeActivePage("portfolio")
+        this.changeProjPhoto = this.changeProjPhoto.bind(this);
+        setInterval(this.changeProjPhoto,1800);
+        p5Pix[0] = p50;
+        p5Pix[1] = p51;
+        p5Pix[2] = p52;
+        p5Pix[3] = p53;
+        p5Pix[4] = p54;
     }
 
     componentDidMount() {
@@ -28,6 +46,14 @@ class Portfolio extends Component {
         document.getElementById(this.state.currSubject).classList.add('portBtnActive')
     }
 
+    changeProjPhoto = () => {
+        this.setState(prevState => {
+            return {           
+                photo: (prevState.photo += 1) % 5
+            }
+        });
+        console.log(this.state.photo)
+    }
 
     fadeInDelay() {
         document.getElementById('portfolioPage').classList.remove('enter-off')
@@ -74,7 +100,6 @@ class Portfolio extends Component {
     
 
     render() {
-        
         return (
             <div id='portfolioPage'>
                 <div className="portfolio">
@@ -114,7 +139,12 @@ class Portfolio extends Component {
                         {this.state.currSubject === "Projects_port" && <div>
                             {document.getElementById('portContentId').classList.remove('no-scroll')}
                             <h2 className="subtopic">Art + Tech</h2>
-                            <p id='coming-soon'>--Coming soon</p>
+                            <div id='projItemsDiv'>
+                                <ProjectItem img={splunkGif} title="Splunk Plays Blackjack" link="https://github.com/bradjste/Splunk_Plays_Blackjack"/>
+                                <ProjectItem img={p5Pix[this.state.photo]} title="p5.js Sticker Designs" link="https://p5js.org"/>
+                                <ProjectItem img={vansGif} title="Jen Stark + Vans Shoes" link="https://www.youtube.com/watch?v=Mi1jzYIzVt4"/>
+                            </div>
+                            
                         </div>}
 
                         {this.state.currSubject === "Music_port" && <div className='musicPort'>

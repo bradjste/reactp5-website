@@ -52,6 +52,10 @@ class About extends Component {
                             <br />
                             <br />
                             I code in languages such as Java, JavaScript, SQL, and Python to achieve sustainable and scalable solutions to complex technical problems. 
+                            <br />
+                            <br />
+                            I created this website using primarily the <a rel='noreferrer noopener' className="conLink" href="https://reactjs.org" target="_blank">React.js </a>
+                             and <a rel='noreferrer noopener' className="conLink" href="https://p5js.org" target="_blank">p5.js </a> libraries.
                         </h2>                
                         {/* <h2 className="subtopic3"><strong>I am a creative technologist; </strong> 
                         an interaction designer that integrates cutting-edge technology with modern design principles to create contemporary digital media and applications.</h2>

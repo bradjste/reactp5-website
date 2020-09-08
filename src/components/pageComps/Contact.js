@@ -3,6 +3,8 @@ import Sketch from 'react-p5'
 let phase = 0.0;
 let xOff = Math.cos(phase)*80;
 let yOff = Math.sin(phase)*90;
+let cursorFlag = true;
+let si;
 
 
 class Contact extends Component {
@@ -11,6 +13,7 @@ class Contact extends Component {
     super(props)
     this.props.isSplashNo()
     this.props.changeActivePage("contact")
+    si = setInterval(this.cursorChange,700)
   }
 
 
@@ -21,6 +24,22 @@ class Contact extends Component {
       setTimeout(this.props.enterChange,300);
     }   
     
+  }
+
+  componentWillUnmount() {
+    clearInterval(si)
+  }
+
+  cursorChange() {
+    if (cursorFlag){
+      document.getElementById('contactSketch').classList.add('closedPalm')
+      document.getElementById('contactSketch').classList.remove('openPalm')
+    } else {
+      document.getElementById('contactSketch').classList.add('openPalm')
+      document.getElementById('contactSketch').classList.remove('closedPalm')
+    }
+    
+    cursorFlag = !cursorFlag;
   }
 
   fadeInDelay() {
@@ -52,6 +71,10 @@ class Contact extends Component {
     }
   }
 
+  windowResized = p5 => {
+    p5.resizeCanvas(p5.width,p5.height)
+  }
+
   render() {
     return (
 
@@ -80,7 +103,7 @@ class Contact extends Component {
               <a href="https://github.com/bradjste" target="_blank" className='conLink' rel='noreferrer noopener'> github.com/bradjste    </a>
             </h2>
           </div>
-          <div className='contactSketch'>
+          <div className='contactSketch' id='contactSketch'>
             <Sketch setup={this.setup} draw={this.draw} windowResized={this.onWindowResize} mousePressed={this.mousePressed} mouseReleased={this.mouseReleased}/>
           </div>
         </div>

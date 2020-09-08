@@ -72,7 +72,7 @@ class NoisePaint extends Component {
   }
 
   onWindowResize = (p5) => {
-    p5.resizeCanvas(p5.windowWidth,p5.windowHeight)
+    p5.resizeCanvas(p5.width,p5.height)
   }
 
   clicked = (p5) => {

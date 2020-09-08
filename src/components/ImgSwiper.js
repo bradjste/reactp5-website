@@ -5,6 +5,12 @@ import img2 from '../img/art1.jpg'
 import img3 from '../img/art2.jpg'
 import img4 from '../img/art3.jpg'
 import img5 from '../img/art4.jpg'
+import img6 from '../img/cagan.png'
+import gif1 from '../img/noiseStuff.gif'
+import gif2 from '../img/gg.gif'
+import gif5 from '../img/kube.gif'
+
+
 
 const ImgSwiper = () => {
     const params = {
@@ -29,19 +35,31 @@ const ImgSwiper = () => {
     return (
       <Swiper {...params}>
         <div className="slideImg">
-            <img src={img1} alt="Slide #1" />
+            <img src={gif1} alt="Slide #1" />
         </div>
         <div className="slideImg">
-            <img src={img2} alt="Slide #2" />
+            <img src={gif2} alt="Slide #2" />
         </div>
         <div className="slideImg">
-            <img src={img3} alt="Slide #3" />
+            <img src={gif5} alt="Slide #3" />
         </div>
         <div className="slideImg">
-            <img src={img4} alt="Slide #4" />
+            <img src={img6} alt="Slide #4" />
         </div>
         <div className="slideImg">
-            <img src={img5} alt="Slide #5" />
+            <img src={img1} alt="Slide #4" />
+        </div>
+        <div className="slideImg">
+            <img src={img2} alt="Slide #5" />
+        </div>
+        <div className="slideImg">
+            <img src={img3} alt="Slide #6" />
+        </div>
+        <div className="slideImg">
+            <img src={img4} alt="Slide #7" />
+        </div>
+        <div className="slideImg">
+            <img src={img5} alt="Slide #8" />
         </div>
 
       </Swiper>
