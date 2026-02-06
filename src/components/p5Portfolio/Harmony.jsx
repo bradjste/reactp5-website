@@ -58,5 +58,5 @@ export default function Harmony() {
         }
     }, [])
 
-    return <div ref={containerRef} id="p5IdD" className="cell-autom" />
+    return <div ref={containerRef} className="p5-sketch-root" />
 }

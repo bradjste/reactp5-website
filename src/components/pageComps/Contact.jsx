@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import p5 from 'p5'
+import { usePageSetup } from '../../hooks/usePageSetup'
 
 let phase = 0.0
 let xOff = Math.cos(phase) * 80
@@ -11,26 +12,7 @@ export default function Contact({ isSplashNo, changeActivePage, hasEntered, ente
     const containerRef = useRef(null)
     const siRef = useRef(null)
 
-    useEffect(() => {
-        isSplashNo()
-        changeActivePage('contact')
-    }, [isSplashNo, changeActivePage])
-
-    useEffect(() => {
-        if (!hasEntered) {
-            const contactPage = document.getElementById('contactPage')
-            if (contactPage) {
-                contactPage.classList.add('enter-off')
-            }
-            setTimeout(() => {
-                if (contactPage) {
-                    contactPage.classList.remove('enter-off')
-                    contactPage.classList.add('fade-in')
-                }
-            }, 200)
-            setTimeout(enterChange, 300)
-        }
-    }, [hasEntered, enterChange])
+    usePageSetup('contactPage', 'contact', isSplashNo, changeActivePage, hasEntered, enterChange)
 
     useEffect(() => {
         const cursorChange = () => {

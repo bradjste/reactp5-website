@@ -162,7 +162,7 @@ export default function CellAuto() {
             >
                 Change Pattern
             </button>
-            <div ref={containerRef} id="p5Id" className="cell-autom" />
+            <div ref={containerRef} className="p5-sketch-root" />
         </div>
     )
 }

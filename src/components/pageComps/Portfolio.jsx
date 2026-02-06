@@ -7,6 +7,7 @@ import CellAuto from '../p5Portfolio/CellAuto'
 import NoisePaint from '../p5Portfolio/NoisePaint'
 import Harmony from '../p5Portfolio/Harmony'
 import ProjectItem from '../ProjectItem'
+import { usePageSetup } from '../../hooks/usePageSetup'
 import caret from '../../img/caret.png'
 import vansGif from '../../img/vans.gif'
 import p50 from '../../img/p5Sticker1.svg'
@@ -17,17 +18,7 @@ import p54 from '../../img/p5Sticker5.png'
 import splunkGif from '../../img/splunk.gif'
 
 
-const p5Pix = [
-    '/p5Sticker1.svg',
-    '/p5Sticker2.png',
-    '/p5Sticker3.png',
-    '/p5Sticker4.png',
-    '/p5Sticker5.png',
-    'Sticker2.png',
-    '/p5Sticker3.png',
-    '/p5Sticker4.png',
-    '/p5Sticker5.png'
-]
+const p5Pix = [p50, p51, p52, p53, p54]
 
 export default function Portfolio({
     isSplashNo,
@@ -38,45 +29,7 @@ export default function Portfolio({
     const [currSubject, setCurrSubject] = useState('Interactive_port')
     const [photo, setPhoto] = useState(0)
 
-    useEffect(() => {
-        isSplashNo()
-        changeActivePage('portfolio')
-    }, [isSplashNo, changeActivePage])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setPhoto((prev) => (prev + 1) % 5)
-        }, 1800)
-
-        return () => clearInterval(interval)
-    }, [])
-
-    useEffect(() => {
-        if (!hasEntered) {
-            const portfolioPage = document.getElementById('portfolioPage')
-            if (portfolioPage) {
-                portfolioPage.classList.add('enter-off')
-            }
-            setTimeout(() => {
-                if (portfolioPage) {
-                    portfolioPage.classList.remove('enter-off')
-                    portfolioPage.classList.add('fade-in')
-                }
-            }, 200)
-            setTimeout(enterChange, 300)
-        }
-
-        const el = document.getElementById(currSubject)
-        if (el) {
-            el.classList.add('portBtnActive')
-        }
-
-        return () => {
-            if (el) {
-                el.classList.remove('portBtnActive')
-            }
-        }
-    }, [hasEntered, enterChange, currSubject])
+    usePageSetup('portfolioPage', 'portfolio', isSplashNo, changeActivePage, hasEntered, enterChange)
 
     const handleChangePortf = (portPage) => {
         const pages = [
@@ -107,7 +60,7 @@ export default function Portfolio({
                     title={
                         <div id="dd-title">
                             {currSubject.split('_')[0].toLowerCase()}
-                            <img src="/caret.png" alt="dropdown caret" />
+                            <img src={caret} alt="dropdown caret" />
                         </div>
                     }
                 >
@@ -177,7 +130,7 @@ export default function Portfolio({
                             <h2 className="subtopic">Art + Tech</h2>
                             <div id="projItemsDiv">
                                 <ProjectItem
-                                    img="/splunk.gif"
+                                    img={splunkGif}
                                     title="Splunk Plays Blackjack"
                                     link="https://github.com/bradjste/Splunk_Plays_Blackjack"
                                 />
@@ -187,7 +140,7 @@ export default function Portfolio({
                                     link="https://p5js.org"
                                 />
                                 <ProjectItem
-                                    img="/vans.gif"
+                                    img={vansGif}
                                     title="Jen Stark + Vans Shoes"
                                     link="https://www.youtube.com/watch?v=Mi1jzYIzVt4"
                                 />

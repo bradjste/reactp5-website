@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import gif0 from '../../img/gif0.gif'
 import gif1 from '../../img/gif1.gif'
+import { usePageSetup } from '../../hooks/usePageSetup'
 
 const gifList = [gif0, gif1]
 
 export default function About({ isSplashNo, changeActivePage, hasEntered, enterChange }) {
     const [gifNum, setGifNum] = useState(0)
 
-    useEffect(() => {
-        isSplashNo()
-        changeActivePage('about')
-    }, [isSplashNo, changeActivePage])
+    usePageSetup('aboutPage', 'about', isSplashNo, changeActivePage, hasEntered, enterChange)
 
+    // Cycle through gifs
     useEffect(() => {
         const interval = setInterval(() => {
             setGifNum((prev) => (prev === gifList.length - 1 ? 0 : prev + 1))
@@ -19,22 +18,6 @@ export default function About({ isSplashNo, changeActivePage, hasEntered, enterC
 
         return () => clearInterval(interval)
     }, [])
-
-    useEffect(() => {
-        if (!hasEntered) {
-            const aboutPage = document.getElementById('aboutPage')
-            if (aboutPage) {
-                aboutPage.classList.add('enter-off')
-            }
-            setTimeout(() => {
-                if (aboutPage) {
-                    aboutPage.classList.remove('enter-off')
-                    aboutPage.classList.add('fade-in')
-                }
-            }, 200)
-            setTimeout(enterChange, 300)
-        }
-    }, [hasEntered, enterChange])
 
     return (
         <div id="aboutPage">

@@ -86,5 +86,5 @@ export default function NoisePaint() {
         }
     }, [scale])
 
-    return <div ref={containerRef} id="p5Id" className="cell-autom" />
+    return <div ref={containerRef} className="p5-sketch-root" />
 }

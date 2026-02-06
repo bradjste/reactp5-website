@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import P5Sketch from './components/P5Sketch'
@@ -13,20 +13,19 @@ export default function App() {
     const [hasEntered, setHasEntered] = useState(false)
     const [activePage, setActivePage] = useState('')
 
-    const isSplashYes = () => {
-        setIsSplash(true)
-    }
+    // Page routes configuration
+    const pageRoutes = [
+        { path: '/about', component: About, label: 'about' },
+        { path: '/portfolio', component: Portfolio, label: 'portfolio' },
+        { path: '/contact', component: Contact, label: 'contact' },
+    ]
 
-    const isSplashNo = () => {
-        setIsSplash(false)
-    }
-
-    const enterChange = () => {
-        setHasEntered(true)
-    }
-
-    const changeActivePage = (page) => {
-        setActivePage(page)
+    // Shared props for page components
+    const pageProps = {
+        isSplashNo: () => setIsSplash(false),
+        changeActivePage: setActivePage,
+        hasEntered,
+        enterChange: () => setHasEntered(true),
     }
 
     return (
@@ -37,7 +36,7 @@ export default function App() {
                 </div>
 
                 {!isSplash && activePage.length > 0 && (
-                    <Navbar isSplashYes={isSplashYes} hasEntered={hasEntered} />
+                    <Navbar isSplashYes={() => setIsSplash(true)} hasEntered={hasEntered} />
                 )}
 
                 <Routes>
@@ -46,45 +45,19 @@ export default function App() {
                         element={
                             <Splash
                                 hasEntered={hasEntered}
-                                isSplashNo={isSplashNo}
-                                enterChange={enterChange}
+                                isSplashNo={() => setIsSplash(false)}
+                                enterChange={() => setHasEntered(true)}
                                 activePage={activePage}
                             />
                         }
                     />
-                    <Route
-                        path="/about"
-                        element={
-                            <About
-                                isSplashNo={isSplashNo}
-                                changeActivePage={changeActivePage}
-                                hasEntered={hasEntered}
-                                enterChange={enterChange}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/portfolio"
-                        element={
-                            <Portfolio
-                                isSplashNo={isSplashNo}
-                                changeActivePage={changeActivePage}
-                                hasEntered={hasEntered}
-                                enterChange={enterChange}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/contact"
-                        element={
-                            <Contact
-                                isSplashNo={isSplashNo}
-                                changeActivePage={changeActivePage}
-                                hasEntered={hasEntered}
-                                enterChange={enterChange}
-                            />
-                        }
-                    />
+                    {pageRoutes.map((route) => (
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            element={<route.component {...pageProps} />}
+                        />
+                    ))}
                 </Routes>
             </div>
         </Router>

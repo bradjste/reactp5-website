@@ -384,6 +384,7 @@ h1 {
 nav ul {
   position: absolute;
   height: auto;
+  margin-top: 5.5vh;
   display: flex;
   list-style-type: none;
   width: auto;
@@ -445,21 +446,21 @@ nav ul li a :visited {
   padding: 10px;
   width: 15vw;
   height: auto;
-  color: white;
+  color: #000;
 }
 
 .portBtn:hover {
-  color: white;
+  color: #000;
   background: #f56134;
 }
 
 .portBtn:active {
-  color: white;
+  color: #000;
   background: #dd491d;
 }
 
 .portBtnActive {
-  color: white;
+  color: #000;
   background: #F89272;
 }
 
@@ -558,7 +559,7 @@ nav ul li a :visited {
   display: none;
   background: #F89272;
   position: absolute;
-  color: white;
+  color: #000;
   margin: 10px;
   height: 5vh;
   font-size: 20pt;
@@ -585,7 +586,7 @@ nav ul li a :visited {
 
 .mob-port-subject {
   font-family: 'Montserrat';
-  color: white;
+  color: #000;
   margin-top: 8px;
   margin-bottom: 8px;
   text-align: center;
@@ -600,17 +601,17 @@ nav ul li a :visited {
 }
 
 #mobile-port-dropdown:hover {
-  color: white;
+  color: #000;
   background: #f56134;
 }
 
 #mobile-port-dropdown:active {
-  color: white;
+  color: #000;
   background: #dd491d;
 }
 
 #mobile-port-dropdown-active {
-  color: white;
+  color: #000;
   background: #F89272;
   display: none;
 }
@@ -637,7 +638,8 @@ nav ul li a :visited {
   margin-left: 2.5%;
 }
 
-.cell-autom {
+.p5-sketch-root {
+  font-size: 0;
   margin-bottom: 20px;
   padding-bottom: 0px;
   margin-top: 0px;
