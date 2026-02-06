@@ -372,7 +372,7 @@ nav {
   min-height: 100px;
   justify-content: flex-end;
   vertical-align: middle;
-  background: black;
+  background: rgba(0, 0, 0, 0.8);
   text-align: center;
   text-decoration: none;
 }
