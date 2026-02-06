@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import p5 from 'p5'
-import openSimplexNoise from '../OpenSimplexNoise'
+import openSimplexNoise from '../../OpenSimplexNoise'
 
 export default function NoisePaint() {
     const containerRef = useRef(null)

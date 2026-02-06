@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap'
 import ImgSwiper from '../ImgSwiper'
-import MusicPlayer from 'react-responsive-music-player'
+import SimpleAudioPlayer from '../SimpleAudioPlayer'
 import playlist from '../../playlist'
 import CellAuto from '../p5Portfolio/CellAuto'
 import NoisePaint from '../p5Portfolio/NoisePaint'
@@ -188,7 +188,7 @@ export default function Portfolio({
                         <div className="musicPort">
                             <div>
                                 <h2 className="subtopic">Hexer Quiz</h2>
-                                <MusicPlayer className="player" playlist={playlist} btnColor="#F89272" />
+                                <SimpleAudioPlayer className="player" playlist={playlist} />
                             </div>
                             <br />
                             <br />

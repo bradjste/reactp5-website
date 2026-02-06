@@ -1,36 +1,37 @@
 import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import splashCard from '../img/bsSplashCard2.png'
+import { Link } from 'react-router-dom'
+import splashCard from '../../img/bsSplashCard2.png'
 
 export default function Splash({ hasEntered, isSplashNo, enterChange, activePage }) {
-    const navigate = useNavigate()
-
     useEffect(() => {
-        const fadeInById = (id) => {
+        const fadeInElement = (id) => {
             const el = document.getElementById(id)
             if (el) {
+                el.classList.remove('enter-off')
                 el.classList.add('fade-in')
             }
         }
 
-        fadeInById('splashCard')
+        fadeInElement('splashCard')
 
         if (!hasEntered) {
-            const enterLink = document.getElementById('enterLink')
-            if (enterLink) {
-                enterLink.classList.add('enter-off')
-            }
-            setTimeout(fadeInById, 1100, 'enterLink')
+            setTimeout(() => fadeInElement('enterLink'), 1100)
             setTimeout(enterChange, 300)
         }
     }, [hasEntered, enterChange])
 
-    const pageLink = activePage === '' ? '/' : `/about`
+    const handleEnterClick = (e) => {
+        if (isSplashNo) {
+            isSplashNo()
+        }
+    }
+
+    const pageLink = activePage === '' ? '/about' : `/about`
 
     return (
         <div id="UI" className="UI">
             <div className="enterPar">
-                <Link id="enterLink" to={pageLink} onClick={isSplashNo}>
+                <Link id="enterLink" to={pageLink} onClick={handleEnterClick}>
                     <button className="enter">ENTER</button>
                 </Link>
             </div>
