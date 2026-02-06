@@ -102,6 +102,11 @@ class Contact extends Component {
               <br className='brShow'/>
               <a href="https://github.com/bradjste" target="_blank" className='conLink' rel='noreferrer noopener'> github.com/bradjste    </a>
             </h2>
+            <h2 className="subtopic">
+              itch.io:  
+              <br className='brShow'/>
+              <a href="https://bradjste.itch.io/" target="_blank" className='conLink' rel='noreferrer noopener'> bradjste.itch.io    </a>
+            </h2>
           </div>
           <div className='contactSketch' id='contactSketch'>
             <Sketch setup={this.setup} draw={this.draw} windowResized={this.onWindowResize} mousePressed={this.mousePressed} mouseReleased={this.mouseReleased}/>
@@ -112,5 +117,6 @@ class Contact extends Component {
     )
   }
 }
+
 
 export default Contact
