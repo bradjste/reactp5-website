@@ -837,6 +837,7 @@ nav ul li a :visited {
     width: 40vw;
     position: absolute;
     justify-content: center;
+    user-select: none;
   }
 
   .bg {

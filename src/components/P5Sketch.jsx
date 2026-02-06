@@ -9,60 +9,53 @@ export default function P5Sketch() {
     useEffect(() => {
         function sketch(p) {
             let phase = 0
-            const layerCount = 30
+            const layerCount = 60
             const resolution = 3
             let noiseGenerators = []
             let waveConfigs = []
-            let trails = []
+            let ripples = []
             let blobNoise = openSimplexNoise(99999)
             let prevMouseX = 0
             let prevMouseY = 0
             let mouseVelocity = 0
+            let fadeProgress = 0
+            const fadeDuration = 240 // frames (4 seconds at 60fps)
+            const strokeFadeEnd = 140 // frames when stroke finishes fading in (2.33 seconds)
 
-            class Trail {
-                constructor(x, y, colors) {
-                    this.x = x
-                    this.y = y
-                    this.colors = colors
-                    this.particles = []
-                    const numParticles = 30
-                    for (let i = 0; i < numParticles; i++) {
-                        this.particles.push({
-                            angle: p.random(p.TWO_PI),
-                            speed: p.random(2, 8),
-                            size: p.random(5, 20),
-                            life: 1.0,
-                            offset: p.random(p.TWO_PI),
-                            colorIndex: Math.floor(p.random(colors.length))
-                        })
-                    }
+            class Ripple {
+                constructor(clickOffset, topColor, bottomColor) {
+                    this.clickOffset = clickOffset // perpendicular offset where click happened
+                    this.topColor = topColor // Color for waves above click point
+                    this.bottomColor = bottomColor // Color for waves below click point
+                    this.radius = 0
+                    this.maxRadius = 5000
+                    this.speed = 15
                 }
 
                 update() {
-                    this.particles.forEach(particle => {
-                        particle.life -= 0.015
-                        const wobble = Math.sin(phase * 5 + particle.offset) * 3
-                        particle.angle += 0.05
-                    })
-                    this.particles = this.particles.filter(p => p.life > 0)
+                    this.radius += this.speed
                 }
 
-                draw() {
-                    this.particles.forEach(particle => {
-                        const dist = (1 - particle.life) * 100
-                        const wobble = Math.sin(phase * 5 + particle.offset) * 20
-                        const px = this.x + Math.cos(particle.angle) * (dist + wobble)
-                        const py = this.y + Math.sin(particle.angle) * (dist + wobble)
-                        const color = this.colors[particle.colorIndex]
-                        const size = particle.size * particle.life
-                        p.fill(color.h, color.s, color.b, particle.life * 80)
-                        p.noStroke()
-                        p.ellipse(px, py, size, size)
-                    })
+                getInfluenceAndColor(layerOffset) {
+                    // Calculate distance from click point along perpendicular axis
+                    const dist = Math.abs(layerOffset - this.clickOffset)
+                    const edgeDist = Math.abs(dist - this.radius)
+                    
+                    // Ripple has a wider width - affects more waves at once
+                    const rippleWidth = 500
+                    if (edgeDist < rippleWidth) {
+                        // Stronger influence at center, steeper falloff for front-heavy pulse
+                        const normalizedDist = edgeDist / rippleWidth
+                        const influence = Math.pow(1 - normalizedDist, 3) // Cubic falloff for stronger front edge
+                        // Determine direction: top (toward larger offset) or bottom
+                        const color = layerOffset > this.clickOffset ? this.topColor : this.bottomColor
+                        return { influence, color }
+                    }
+                    return { influence: 0, color: null }
                 }
 
                 isDead() {
-                    return this.particles.length === 0
+                    return this.radius > this.maxRadius
                 }
             }
 
@@ -70,8 +63,19 @@ export default function P5Sketch() {
                 p.createCanvas(p.windowWidth, p.windowHeight)
                 p.colorMode(p.HSB, 360, 100, 100, 100)
 
-                // Pick a random base hue for the entire palette
-                const baseHue = p.random(360)
+                // Pick a random base hue for the entire palette (avoid green: 80-160)
+                let baseHue
+                do {
+                    baseHue = p.random(360)
+                } while (baseHue >= 80 && baseHue <= 160)
+                
+                // Define 4 complementary hues (tetrad color scheme)
+                const complementaryHues = [
+                    baseHue,
+                    (baseHue + 90) % 360,
+                    (baseHue + 180) % 360,
+                    (baseHue + 270) % 360
+                ]
 
                 // Initialize noise generators and wave configs
                 for (let i = 0; i < layerCount; i++) {
@@ -82,28 +86,52 @@ export default function P5Sketch() {
                     })
 
                     const grainFreq = p.random(0.015, 0.08)
-                    // Derive hue from base using wider palette variations
-                    const hueVariation = p.random(0, 360)
-                    const derivedHue = (baseHue + hueVariation) % 360
+                    // Pick hue based on 60-20-10-10 rule (random distribution)
+                    const rand = p.random()
+                    let derivedHue
+                    if (rand < 0.6) {
+                        derivedHue = complementaryHues[0] // 60% primary
+                    } else if (rand < 0.8) {
+                        derivedHue = complementaryHues[1] // 20% secondary
+                    } else if (rand < 0.9) {
+                        derivedHue = complementaryHues[2] // 10% tertiary
+                    } else {
+                        derivedHue = complementaryHues[3] // 10% quaternary
+                    }
                     const smoothness = p.random() < 0.3 ? p.random(0.8, 1.0) : p.random(0, 0.5)
                     const speed = p.random(0.05, 0.35)
                     const hasStroke = p.random() < 0.25
+                    const direction = p.random() < 0.5 ? 1 : -1
+                    
+                    // Generate sat and brt so they're not both low
+                    // Either low sat (pastel) OR low brightness (dark), but not both (muddy)
+                    let sat, brt
+                    if (p.random() < 0.5) {
+                        // Low saturation (pastel) - keep brightness high
+                        sat = p.random(10, 50)
+                        brt = p.random(65, 100)
+                    } else {
+                        // High saturation - can have any brightness
+                        sat = p.random(60, 100)
+                        brt = p.random(40, 100)
+                    }
                     
                     waveConfigs.push({
-                        baseFreq: p.random(0.0008, 0.008),
+                        baseFreq: p.random(0.0002, 0.008),
                         grainFreq: grainFreq,
                         baseAmp: p.random(80, 180),
                         grainAmp: p.map(grainFreq, 0.015, 0.08, 15, 60),
                         speed: speed,
+                        direction: direction,
                         parallaxScale: p.map(speed, 0.05, 0.35, 0.6, 1.4),
                         smoothness: smoothness,
                         hasStroke: hasStroke,
                         strokeWeight: hasStroke ? p.random(1, 3) : 0,
                         strokeAlpha: hasStroke ? p.random(40, 80) : 0,
                         hue: derivedHue,
-                        sat: p.random(40, 100),
-                        brt: p.random(20, 100),
-                        opacity: p.random(30, 100)
+                        sat: sat,
+                        brt: brt,
+                        opacity: 100
                     })
                 }
             }
@@ -135,13 +163,13 @@ export default function P5Sketch() {
                         // Sample base noise
                         const baseNoise = noise.base.noise2D(
                             distance * config.baseFreq,
-                            phase * config.speed * 0.5
+                            phase * config.speed * config.direction * 0.5
                         )
                         
                         // Sample grainy noise
                         const grainNoise = noise.grain.noise2D(
-                            (distance + phase * config.speed * 150) * config.grainFreq,
-                            phase * config.speed
+                            (distance + phase * config.speed * config.direction * 150) * config.grainFreq,
+                            phase * config.speed * config.direction
                         )
 
                         // Calculate displacement perpendicular to diagonal
@@ -178,25 +206,67 @@ export default function P5Sketch() {
                         : 0
                     
                     // Blend towards white (desaturate and brighten) when mouse is near wave
-                    const blendedHue = config.hue
-                    const blendedSat = p.lerp(config.sat, 0, colorInfluence * 0.9)
-                    const blendedBrt = p.lerp(config.brt, 100, colorInfluence * 0.8)
+                    let blendedHue = config.hue
+                    let blendedSat = config.sat
+                    let blendedBrt = config.brt
+                    let blendedOpacity = config.opacity
                     
-                    // Show stroke only when mouse is close to wave
-                    if (colorInfluence > 0.1) {
-                        if (colorInfluence > 0.3) {
-                            // Black stroke when very close (wave turns white)
-                            p.stroke(0, 0, 0, colorInfluence * 100)
-                            p.strokeWeight(p.lerp(1, 2.5, colorInfluence))
-                        } else {
-                            // Subtle stroke when moderately close
-                            p.stroke(blendedHue, blendedSat * 0.8, blendedBrt - 20, colorInfluence * 80)
-                            p.strokeWeight(1.5)
+                    // Fade in from white on initial load
+                    // Stage 1 (0-80): White waves, black stroke fades in
+                    // Stage 2 (80-240): Black stroke visible, colors fade in
+                    let colorFadeAmount, strokeFadeAmount
+                    
+                    if (fadeProgress <= strokeFadeEnd) {
+                        // Stage 1: Colors stay white, stroke fades in
+                        strokeFadeAmount = fadeProgress / strokeFadeEnd
+                        colorFadeAmount = 0
+                    } else {
+                        // Stage 2: Stroke fully visible, colors fade in
+                        strokeFadeAmount = 1
+                        colorFadeAmount = (fadeProgress - strokeFadeEnd) / (fadeDuration - strokeFadeEnd)
+                    }
+                    
+                    blendedSat = p.lerp(0, blendedSat, colorFadeAmount)
+                    blendedBrt = p.lerp(100, blendedBrt, colorFadeAmount)
+                    
+                    // Apply mouse proximity - increase opacity instead of whitening
+                    blendedOpacity = p.lerp(blendedOpacity, 100, colorInfluence * 0.9)
+                    
+                    // Apply ripple color by blending towards it
+                    ripples.forEach(ripple => {
+                        const { influence, color } = ripple.getInfluenceAndColor(layerOffset)
+                        if (influence > 0 && color) {
+                            // Blend towards ripple color and make fully opaque
+                            blendedHue = p.lerp(blendedHue, color.h, influence)
+                            blendedSat = p.lerp(blendedSat, color.s, influence)
+                            blendedBrt = p.lerp(blendedBrt, color.b, influence)
+                            blendedOpacity = p.lerp(blendedOpacity, 100, influence)
                         }
+                    })
+                    
+                    // Handle stroke - fade in black stroke, then fade out as colors appear
+                    if (fadeProgress < fadeDuration) {
+                        // Black stroke fades in during stage 1, then fades out during stage 2
+                        let strokeAlpha
+                        if (fadeProgress <= strokeFadeEnd) {
+                            // Stage 1: Fade in
+                            strokeAlpha = strokeFadeAmount * 100
+                        } else {
+                            // Stage 2: Fade out as colors fade in
+                            strokeAlpha = (1 - colorFadeAmount) * 100
+                        }
+                        p.stroke(0, 0, 0, strokeAlpha)
+                        p.strokeWeight(1.5)
+                    } else if (colorInfluence > 0.1) {
+                        // Mouse proximity stroke (after fade-in complete) - inverted color
+                        const invertedHue = (blendedHue + 180) % 360
+                        const invertedBrt = 100 - blendedBrt
+                        p.stroke(invertedHue, blendedSat, invertedBrt, colorInfluence * 100)
+                        p.strokeWeight(p.lerp(1, 2.5, colorInfluence))
                     } else {
                         p.noStroke()
                     }
-                    p.fill(blendedHue, blendedSat, blendedBrt, config.opacity)
+                    p.fill(blendedHue, blendedSat, blendedBrt, blendedOpacity)
                     p.beginShape()
                     
                     // Trace wave along diagonal
@@ -215,10 +285,14 @@ export default function P5Sketch() {
                     p.endShape(p.CLOSE)
                 }
 
-                // Update and draw trails
-                trails.forEach(trail => trail.update())
-                trails = trails.filter(trail => !trail.isDead())
-                trails.forEach(trail => trail.draw())
+                // Update and remove dead ripples
+                ripples.forEach(ripple => ripple.update())
+                ripples = ripples.filter(ripple => !ripple.isDead())
+
+                // Increment fade progress
+                if (fadeProgress < fadeDuration) {
+                    fadeProgress++
+                }
 
                 // Draw blob at mouse position with mixed nearby colors
                 const blobColors = []
@@ -297,30 +371,35 @@ export default function P5Sketch() {
             }
 
             p.mousePressed = () => {
-                // Collect colors from nearby waves
-                const nearbyColors = []
+                // Disable clicks until fade-in animation completes
+                if (fadeProgress < fadeDuration) {
+                    return
+                }
+                
+                // Find the wave layer closest to click and get its color
+                const perpAngle = Math.PI / 4 + Math.PI / 2
+                const mousePerpDist = p.mouseX * Math.cos(perpAngle) + p.mouseY * Math.sin(perpAngle)
+                
+                let closestLayer = 0
+                let minDist = Infinity
+                const perpExtent = (p.windowWidth + p.windowHeight) / Math.sqrt(2)
+                
                 for (let layer = 0; layer < layerCount; layer++) {
-                    const config = waveConfigs[layer]
                     const layerNorm = layer / (layerCount - 1)
-                    const perpExtent = (p.windowWidth + p.windowHeight) / Math.sqrt(2)
                     const layerOffset = p.map(layerNorm, 0, 1, -perpExtent * 0.7, perpExtent * 0.9)
-                    
-                    // Calculate distance from mouse to diagonal line
-                    const perpAngle = Math.PI / 4 + Math.PI / 2
-                    const mousePerpDist = p.mouseX * Math.cos(perpAngle) + p.mouseY * Math.sin(perpAngle)
                     const dist = Math.abs(mousePerpDist - layerOffset)
                     
-                    if (dist < 300) {
-                        nearbyColors.push({
-                            h: config.hue,
-                            s: config.sat,
-                            b: config.brt
-                        })
+                    if (dist < minDist) {
+                        minDist = dist
+                        closestLayer = layer
                     }
                 }
-                if (nearbyColors.length > 0) {
-                    trails.push(new Trail(p.mouseX, p.mouseY, nearbyColors))
-                }
+                
+                // Create ripple with black pulse toward top, white toward bottom
+                ripples.push(new Ripple(mousePerpDist, 
+                    { h: 0, s: 0, b: 0 },   // Top (black)
+                    { h: 0, s: 0, b: 100 }  // Bottom (white)
+                ))
             }
 
             p.windowResized = () => {

@@ -66,6 +66,15 @@ export default function CellAuto() {
     }, [])
 
     useEffect(() => {
+        // Auto change pattern every 5 seconds
+        const intervalId = setInterval(() => {
+            setState(prev => changePattern(prev))
+        }, 5000)
+
+        return () => clearInterval(intervalId)
+    }, [])
+
+    useEffect(() => {
         const sketch = (p) => {
             p.setup = () => {
                 const canvas = p.createCanvas(p.windowWidth * 0.835, p.windowHeight * 0.2)
@@ -156,12 +165,6 @@ export default function CellAuto() {
 
     return (
         <div>
-            <button
-                onClick={() => setState(prev => changePattern(prev))}
-                style={{ margin: '10px', padding: '10px' }}
-            >
-                Change Pattern
-            </button>
             <div ref={containerRef} className="p5-sketch-root" />
         </div>
     )
