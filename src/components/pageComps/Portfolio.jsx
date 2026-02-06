@@ -16,7 +16,18 @@ import p53 from '../../img/p5Sticker4.png'
 import p54 from '../../img/p5Sticker5.png'
 import splunkGif from '../../img/splunk.gif'
 
-const p5Pix = [p50, p51, p52, p53, p54]
+
+const p5Pix = [
+    '/p5Sticker1.svg',
+    '/p5Sticker2.png',
+    '/p5Sticker3.png',
+    '/p5Sticker4.png',
+    '/p5Sticker5.png',
+    'Sticker2.png',
+    '/p5Sticker3.png',
+    '/p5Sticker4.png',
+    '/p5Sticker5.png'
+]
 
 export default function Portfolio({
     isSplashNo,
@@ -96,7 +107,7 @@ export default function Portfolio({
                     title={
                         <div id="dd-title">
                             {currSubject.split('_')[0].toLowerCase()}
-                            <img src={caret} alt="dropdown caret" />
+                            <img src="/caret.png" alt="dropdown caret" />
                         </div>
                     }
                 >
@@ -166,7 +177,7 @@ export default function Portfolio({
                             <h2 className="subtopic">Art + Tech</h2>
                             <div id="projItemsDiv">
                                 <ProjectItem
-                                    img={splunkGif}
+                                    img="/splunk.gif"
                                     title="Splunk Plays Blackjack"
                                     link="https://github.com/bradjste/Splunk_Plays_Blackjack"
                                 />
@@ -176,7 +187,7 @@ export default function Portfolio({
                                     link="https://p5js.org"
                                 />
                                 <ProjectItem
-                                    img={vansGif}
+                                    img="/vans.gif"
                                     title="Jen Stark + Vans Shoes"
                                     link="https://www.youtube.com/watch?v=Mi1jzYIzVt4"
                                 />

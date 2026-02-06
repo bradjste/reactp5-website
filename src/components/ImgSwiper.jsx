@@ -15,6 +15,8 @@ import img4 from '../img/art3.jpg'
 import img5 from '../img/art4.jpg'
 import img6 from '../img/cagan.png'
 
+
+
 export default function ImgSwiper() {
     const images = [
         { src: gif1, alt: 'Noise', key: 0 },
