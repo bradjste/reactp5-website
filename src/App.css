@@ -115,6 +115,23 @@ strong {
   flex-direction: row;
 }
 
+.simple-player {
+  padding: 0 20px;
+}
+
+.track-item {
+  margin-bottom: 25px;
+}
+
+.track-item audio {
+  margin-bottom: 8px;
+}
+
+.track-item p {
+  margin: 0;
+  padding: 0 5px;
+}
+
 .contact {
   z-index: 3;
   display: inline-block;
@@ -204,6 +221,10 @@ strong {
   transition: filter 0.5s;
   width: 100vw;
   height: 100vh;
+}
+
+.LiveBackDrop.blurred {
+  filter: blur(4px);
 }
 
 .contactSketch {

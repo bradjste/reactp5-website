@@ -8,8 +8,7 @@ export default function P5Sketch() {
 
     useEffect(() => {
         function sketch(p) {
-            let phase = 0
-            const layerCount = 60
+            const layerCount = 30
             const resolution = 3
             let noiseGenerators = []
             let waveConfigs = []
@@ -20,7 +19,7 @@ export default function P5Sketch() {
             let mouseVelocity = 0
             let fadeProgress = 0
             const fadeDuration = 240 // frames (4 seconds at 60fps)
-            const strokeFadeEnd = 140 // frames when stroke finishes fading in (2.33 seconds)
+            const colorFadeStart = 60 // frames when colors start fading in (1 second)
 
             class Ripple {
                 constructor(clickOffset, topColor, bottomColor) {
@@ -57,6 +56,98 @@ export default function P5Sketch() {
                 isDead() {
                     return this.radius > this.maxRadius
                 }
+            }
+
+            // Function to draw a tree at a specific position
+            function drawTree(x, y, size, hue, branches, animPhase, branchNoise) {
+                p.push()
+                p.translate(x, y)
+                
+                // Draw trunk - extend it far below the screen with thick, textured stroke
+                p.stroke(hue, 60, 40, 90)
+                p.strokeWeight(14)
+                p.strokeCap(p.SQUARE)
+                p.line(0, p.windowHeight * 2, 0, -size) // Extend trunk way down
+                
+                // Add texture lines to trunk
+                p.strokeWeight(4)
+                p.stroke(hue, 70, 30, 40)
+                p.line(-3, p.windowHeight * 2, -3, -size * 0.3)
+                p.line(3, p.windowHeight * 2, 3, -size * 0.4)
+                
+                // Draw branches
+                branches.forEach((branch, branchIdx) => {
+                    // Add violent branch sway with leftward bias using simplex noise
+                    const branchSwayX = branchNoise.noise2D(branchIdx * 0.5, animPhase * 1.5) * 0.35 - 0.15
+                    const branchSwayY = branchNoise.noise2D(branchIdx * 0.5 + 100, animPhase * 1.5) * 0.2
+                    
+                    const branchX = Math.sin(branch.angle + branchSwayX) * size * branch.length
+                    const branchY = -Math.cos(branch.angle + branchSwayY) * size * branch.length - size * 0.5
+                    
+                    p.stroke(hue, 50, 50, 80)
+                    p.strokeWeight(6)
+                    p.strokeCap(p.ROUND)
+                    p.line(0, -size * 0.5, branchX, branchY)
+                    
+                    // Sub-branches
+                    branch.subBranches.forEach(subBranch => {
+                        const subLen = branch.length * 0.5
+                        const subX = branchX + Math.sin(subBranch.angle) * size * subLen
+                        const subY = branchY - Math.cos(subBranch.angle) * size * subLen
+                        
+                        p.stroke(hue, 40, 60, 60)
+                        p.strokeWeight(3)
+                        p.line(branchX, branchY, subX, subY)
+                        
+                        // Add leaves at sub-branch ends with slow gentle swaying
+                        subBranch.leaves.forEach(leaf => {
+                            // Gentle swaying animation with stored properties
+                            const swayAmount = p.sin(animPhase * leaf.swaySpeed + leaf.swayPhase) * 0.2
+                            const leafAngle = leaf.baseAngle + swayAmount
+                            
+                            p.fill(leaf.hue, 70, 70, 80)
+                            p.noStroke()
+                            
+                            // Different leaf shapes
+                            p.push()
+                            p.translate(subX, subY)
+                            p.rotate(leafAngle)
+                            
+                            // Teardrop/oval shaped leaves
+                            p.beginShape()
+                            for (let a = 0; a < p.TWO_PI; a += 0.3) {
+                                const r = leaf.size * (1 + 0.3 * Math.cos(a * 2))
+                                p.vertex(r * Math.cos(a), r * Math.sin(a) * 0.7)
+                            }
+                            p.endShape(p.CLOSE)
+                            p.pop()
+                        })
+                    })
+                    
+                    // Add leaves at main branch ends too with slow swaying
+                    branch.leaves.forEach(leaf => {
+                        // Gentle swaying animation with stored properties
+                        const swayAmount = p.sin(animPhase * leaf.swaySpeed + leaf.swayPhase) * 0.2
+                        const leafAngle = leaf.baseAngle + swayAmount
+                        
+                        p.fill(leaf.hue, 65, 75, 85)
+                        p.noStroke()
+                        
+                        p.push()
+                        p.translate(branchX, branchY)
+                        p.rotate(leafAngle)
+                        
+                        // Rounded diamond shapes
+                        p.beginShape()
+                        p.vertex(0, -leaf.size)
+                        p.bezierVertex(leaf.size * 0.5, -leaf.size * 0.3, leaf.size * 0.5, leaf.size * 0.3, 0, leaf.size)
+                        p.bezierVertex(-leaf.size * 0.5, leaf.size * 0.3, -leaf.size * 0.5, -leaf.size * 0.3, 0, -leaf.size)
+                        p.endShape(p.CLOSE)
+                        p.pop()
+                    })
+                })
+                
+                p.pop()
             }
 
             p.setup = () => {
@@ -99,7 +190,7 @@ export default function P5Sketch() {
                         derivedHue = complementaryHues[3] // 10% quaternary
                     }
                     const smoothness = p.random() < 0.3 ? p.random(0.8, 1.0) : p.random(0, 0.5)
-                    const speed = p.random(0.05, 0.35)
+                    const speed = p.random(0.2, 3.5)
                     const hasStroke = p.random() < 0.25
                     const direction = p.random() < 0.5 ? 1 : -1
                     
@@ -117,12 +208,10 @@ export default function P5Sketch() {
                     }
                     
                     waveConfigs.push({
-                        baseFreq: p.random(0.0002, 0.008),
-                        grainFreq: grainFreq,
-                        baseAmp: p.random(80, 180),
-                        grainAmp: p.map(grainFreq, 0.015, 0.08, 15, 60),
-                        speed: speed,
-                        direction: direction,
+                        wavelength: p.random(150, 500), // Longer wavelength for less density
+                        baseAmp: p.random(10, 45),
+                        grainAmp: p.map(grainFreq, 0.015, 0.08, 1, 12),
+                        speed: speed * 2, // Horizontal scroll speed
                         parallaxScale: p.map(speed, 0.05, 0.35, 0.6, 1.4),
                         smoothness: smoothness,
                         hasStroke: hasStroke,
@@ -131,13 +220,73 @@ export default function P5Sketch() {
                         hue: derivedHue,
                         sat: sat,
                         brt: brt,
-                        opacity: 100
+                        opacity: 100,
+                        phaseOffset: p.random(0, p.TWO_PI), // Random starting phase for variation
+                        trees: [] // Trees for this wave layer
                     })
+                    
+                    // Add 2-4 trees to each wave
+                    const treeCount = Math.floor(p.random(4, 9))
+                    for (let t = 0; t < treeCount; t++) {
+                        const diagonalLength = Math.sqrt(p.windowWidth * p.windowWidth + p.windowHeight * p.windowHeight)
+                        const treeHue = p.random(360)
+                        const branches = [
+                            { angle: p.random(-1, -0.3), length: p.random(0.4, 0.7), subs: Math.floor(p.random(0, 3)) },
+                            { angle: p.random(0.3, 1), length: p.random(0.4, 0.7), subs: Math.floor(p.random(0, 3)) },
+                            { angle: p.random(-0.5, 0.5), length: p.random(0.5, 0.8), subs: Math.floor(p.random(1, 4)) }
+                        ]
+                        
+                        // Generate persistent leaf properties for each branch
+                        branches.forEach((branch, branchIdx) => {
+                            // Main branch leaves
+                            branch.leaves = []
+                            for (let l = 0; l < 5; l++) {
+                                branch.leaves.push({
+                                    size: p.random(18, 30),
+                                    baseAngle: p.random(p.TWO_PI),
+                                    hue: (treeHue + p.random(-30, 30)) % 360,
+                                    swaySpeed: p.random(6.0, 8.0), // Very fast wind effect
+                                    swayPhase: p.random(p.TWO_PI) // Random phase for natural variety
+                                })
+                            }
+                            
+                            // Generate persistent sub-branches with their angles and leaves
+                            branch.subBranches = []
+                            for (let i = 0; i < branch.subs; i++) {
+                                const subAngle = branch.angle + p.random(-0.5, 0.5)
+                                const subLeaves = []
+                                for (let l = 0; l < 3; l++) {
+                                    subLeaves.push({
+                                        size: p.random(14, 24),
+                                        baseAngle: p.random(p.TWO_PI),
+                                        hue: (treeHue + p.random(-30, 30)) % 360,
+                                        swaySpeed: p.random(6.0, 8.0), // Very fast wind effect
+                                        swayPhase: p.random(p.TWO_PI) // Random phase for natural variety
+                                    })
+                                }
+                                branch.subBranches.push({
+                                    angle: subAngle,
+                                    leaves: subLeaves
+                                })
+                            }
+                        })
+                        
+                        waveConfigs[i].trees.push({
+                            diagonalPos: p.random(-diagonalLength * 0.5, diagonalLength * 2),
+                            size: p.random(60, 130),
+                            hue: treeHue,
+                            branches: branches,
+                            branchNoise: openSimplexNoise(p.random(10000)) // Unique noise for branch sway
+                        })
+                    }
                 }
             }
 
             p.draw = () => {
                 p.background(0, 0, 5, 100)
+
+                // Use time-based animation to be framerate-independent
+                const time = p.millis() / 1000 // Time in seconds
 
                 for (let layer = 0; layer < layerCount; layer++) {
                     const config = waveConfigs[layer]
@@ -160,21 +309,43 @@ export default function P5Sketch() {
                         const baseX = distance * Math.cos(Math.PI / 4) + layerOffset * Math.cos(Math.PI / 4 + Math.PI / 2)
                         const baseY = distance * Math.sin(Math.PI / 4) + layerOffset * Math.sin(Math.PI / 4 + Math.PI / 2)
                         
-                        // Sample base noise
-                        const baseNoise = noise.base.noise2D(
-                            distance * config.baseFreq,
-                            phase * config.speed * config.direction * 0.5
+                        // Blend sinusoidal and noise-based displacement for organic motion
+                        const scrollOffset = time * config.speed * 20
+                        const wavePhase = (distance + scrollOffset + config.phaseOffset) * (p.TWO_PI / config.wavelength)
+                        
+                        // Simplex noise for organic base motion
+                        const noiseBase = noise.base.noise2D(
+                            distance * 0.003 + time * config.speed * 0.05,
+                            layerOffset * 0.001 + time * config.speed * 0.03
                         )
                         
-                        // Sample grainy noise
-                        const grainNoise = noise.grain.noise2D(
-                            (distance + phase * config.speed * config.direction * 150) * config.grainFreq,
-                            phase * config.speed * config.direction
+                        // Low frequency simplex noise for large-scale undulations
+                        const lowFreqNoise = noise.base.noise2D(
+                            distance * 0.0008 + time * config.speed * 0.02,
+                            layerOffset * 0.0003 + time * config.speed * 0.015
                         )
-
+                        
+                        // Add sinusoidal harmonics modulated by noise
+                        const wave1 = p.sin(wavePhase + noiseBase * 2) * (0.7 + noiseBase * 0.2)
+                        const wave2 = p.sin(wavePhase * 2.3 + time * 0.3 + noiseBase) * 0.25
+                        const wave3 = p.sin(wavePhase * 1.7 + time * 0.5) * 0.2
+                        const wave4 = p.sin(wavePhase * 0.3 + time * 0.2) * 0.35  // Very low frequency
+                        const wave5 = p.sin(wavePhase * 3.8 + time * 0.7) * 0.08    // Higher frequency - reduced amp
+                        const wave6 = p.sin(wavePhase * 5.5 + time * 1.1 + noiseBase * 1.5) * 0.05  // Very high frequency - reduced amp - reduced amp
+                        
+                        // Fine grain noise for texture
+                        const grainNoise = noise.grain.noise2D(
+                            distance * 0.015 + time * config.speed * 0.1,
+                            time * config.speed * 0.2
+                        )
+                        
+                        // Combine noise and waves with additional frequencies and low freq noise
+                        const combinedWave = (wave1 + wave2 + wave3 + wave4 + wave5 + wave6 + noiseBase * 0.3 + lowFreqNoise * 0.5) / 2.8
+                        const textureDetail = grainNoise * (1 - config.smoothness) * 0.5
+                        
                         // Calculate displacement perpendicular to diagonal
-                        const baseDisp = baseNoise * config.baseAmp * config.parallaxScale
-                        const grainDisp = grainNoise * config.grainAmp * (1 - config.smoothness) * config.parallaxScale
+                        const baseDisp = combinedWave * config.baseAmp * config.parallaxScale
+                        const grainDisp = textureDetail * config.grainAmp * config.parallaxScale
                         let displacement = baseDisp + grainDisp
                         
                         // Mouse interaction: push waves away from cursor
@@ -189,7 +360,7 @@ export default function P5Sketch() {
                         
                         // Apply displacement perpendicular to 45-degree line
                         const perpAngle = Math.PI / 4 + Math.PI / 2
-                        const x = baseX + Math.cos(perpAngle) * displacement
+                        const x = baseX + Math.cos(perpAngle) * displacement + 200  // Translate to the right
                         const y = baseY + Math.sin(perpAngle) * displacement
                         buffer.push({ x, y })
                     }
@@ -205,25 +376,26 @@ export default function P5Sketch() {
                         ? 1 - (minDistToLine / mouseDistanceInfluenceRadius) 
                         : 0
                     
+                    // Slowly mutate colors over time based on wave speed
+                    const colorMutationRate = config.speed * 0.5 // Faster waves mutate faster
+                    const hueShift = (time * colorMutationRate) % 360
+                    
                     // Blend towards white (desaturate and brighten) when mouse is near wave
-                    let blendedHue = config.hue
+                    let blendedHue = (config.hue + hueShift) % 360
                     let blendedSat = config.sat
                     let blendedBrt = config.brt
                     let blendedOpacity = config.opacity
                     
                     // Fade in from white on initial load
-                    // Stage 1 (0-80): White waves, black stroke fades in
-                    // Stage 2 (80-240): Black stroke visible, colors fade in
-                    let colorFadeAmount, strokeFadeAmount
+                    // Black stroke visible from start, colors fade in after 2 seconds
+                    let colorFadeAmount
                     
-                    if (fadeProgress <= strokeFadeEnd) {
-                        // Stage 1: Colors stay white, stroke fades in
-                        strokeFadeAmount = fadeProgress / strokeFadeEnd
+                    if (fadeProgress <= colorFadeStart) {
+                        // First 2 seconds: Colors stay white, black stroke visible
                         colorFadeAmount = 0
                     } else {
-                        // Stage 2: Stroke fully visible, colors fade in
-                        strokeFadeAmount = 1
-                        colorFadeAmount = (fadeProgress - strokeFadeEnd) / (fadeDuration - strokeFadeEnd)
+                        // After 2 seconds: Colors fade in over remaining time
+                        colorFadeAmount = (fadeProgress - colorFadeStart) / (fadeDuration - colorFadeStart)
                     }
                     
                     blendedSat = p.lerp(0, blendedSat, colorFadeAmount)
@@ -244,28 +416,9 @@ export default function P5Sketch() {
                         }
                     })
                     
-                    // Handle stroke - fade in black stroke, then fade out as colors appear
-                    if (fadeProgress < fadeDuration) {
-                        // Black stroke fades in during stage 1, then fades out during stage 2
-                        let strokeAlpha
-                        if (fadeProgress <= strokeFadeEnd) {
-                            // Stage 1: Fade in
-                            strokeAlpha = strokeFadeAmount * 100
-                        } else {
-                            // Stage 2: Fade out as colors fade in
-                            strokeAlpha = (1 - colorFadeAmount) * 100
-                        }
-                        p.stroke(0, 0, 0, strokeAlpha)
-                        p.strokeWeight(1.5)
-                    } else if (colorInfluence > 0.1) {
-                        // Mouse proximity stroke (after fade-in complete) - inverted color
-                        const invertedHue = (blendedHue + 180) % 360
-                        const invertedBrt = 100 - blendedBrt
-                        p.stroke(invertedHue, blendedSat, invertedBrt, colorInfluence * 100)
-                        p.strokeWeight(p.lerp(1, 2.5, colorInfluence))
-                    } else {
-                        p.noStroke()
-                    }
+                    // Handle stroke - always show black stroke
+                    p.stroke(0, 0, 0, 60)
+                    p.strokeWeight(1.5)
                     p.fill(blendedHue, blendedSat, blendedBrt, blendedOpacity)
                     p.beginShape()
                     
@@ -283,6 +436,16 @@ export default function P5Sketch() {
                     }
                     
                     p.endShape(p.CLOSE)
+                    
+                    // Draw trees for this wave layer
+                    config.trees.forEach(tree => {
+                        // Calculate position along diagonal (trees don't move)
+                        const treeX = tree.diagonalPos * Math.cos(Math.PI / 4) + layerOffset * Math.cos(Math.PI / 4 + Math.PI / 2)
+                        const treeY = tree.diagonalPos * Math.sin(Math.PI / 4) + layerOffset * Math.sin(Math.PI / 4 + Math.PI / 2)
+                        
+                        // Draw the tree
+                        drawTree(treeX, treeY, tree.size, tree.hue, tree.branches, time, tree.branchNoise)
+                    })
                 }
 
                 // Update and remove dead ripples
@@ -344,8 +507,8 @@ export default function P5Sketch() {
                     for (let i = 0; i < numPoints; i++) {
                         const angle = (i / numPoints) * p.TWO_PI
                         const noiseVal = blobNoise.noise2D(
-                            Math.cos(angle) * 3 + phase * 2,
-                            Math.sin(angle) * 3 + phase * 2
+                            Math.cos(angle) * 3 + time * 2,
+                            Math.sin(angle) * 3 + time * 2
                         )
                         const radius = baseRadius + noiseVal * noiseAmp
                         const x = p.mouseX + Math.cos(angle) * radius
@@ -356,8 +519,8 @@ export default function P5Sketch() {
                     for (let i = 0; i < 3; i++) {
                         const angle = (i / numPoints) * p.TWO_PI
                         const noiseVal = blobNoise.noise2D(
-                            Math.cos(angle) * 3 + phase * 2,
-                            Math.sin(angle) * 3 + phase * 2
+                            Math.cos(angle) * 3 + time * 2,
+                            Math.sin(angle) * 3 + time * 2
                         )
                         const radius = baseRadius + noiseVal * noiseAmp
                         const x = p.mouseX + Math.cos(angle) * radius
@@ -366,8 +529,6 @@ export default function P5Sketch() {
                     }
                     p.endShape(p.CLOSE)
                 }
-
-                phase += 0.01
             }
 
             p.mousePressed = () => {

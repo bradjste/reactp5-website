@@ -31,7 +31,7 @@ export default function App() {
     return (
         <Router>
             <div id="App">
-                <div id="LiveBackDrop" className="LiveBackDrop">
+                <div id="LiveBackDrop" className={`LiveBackDrop ${!isSplash ? 'blurred' : ''}`}>
                     <P5Sketch />
                 </div>
 

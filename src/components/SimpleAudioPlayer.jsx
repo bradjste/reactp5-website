@@ -8,7 +8,7 @@ export default function SimpleAudioPlayer({ playlist }) {
                 <div>
                     {playlist.map((track, idx) => (
                         <div key={idx} className="track-item">
-                            <audio controls style={{ width: '100%', marginBottom: '10px' }}>
+                            <audio controls style={{ width: '100%' }}>
                                 <source src={track.url} type="audio/mpeg" />
                                 Your browser does not support the audio element.
                             </audio>
